@@ -10,6 +10,6 @@ if (process.env.NODE_ENV === 'production') {
 
 
 
-let baseURL = 'http://localhost:8080';
+let baseURL = 'http://remote3.jugendbuero.be/arbeitsplan';
 
 export const apiHost = baseURL;
