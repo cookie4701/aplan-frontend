@@ -30,6 +30,9 @@ export default {
         },
         scheduledataAddSuccess(state) {
             state.statusScheduleNew = 'added';
+            state.scheduleNew.schedulename = '';
+            state.scheduleNew.scheduleStart = '';
+            state.scheduleNew.scheduleEnd = '';
         },
         scheduledataAddError(state) {
             state.statusScheduleNew = 'open';
@@ -64,8 +67,11 @@ export default {
                     commit('scheduledata_error');
                 })
         },
-        scheduleDataNewToServer({commit}, snew) {
+        scheduleDataNewToServer({commit}, psnew) {
             commit('scheduledataAddPending');
+            let snew = psnew;
+            snew.scheduleStart = rearrangeDateBeToDb(snew.scheduleStart);
+            snew.scheduleEnd = rearrangeDateBeToDb(snew.scheduleEnd);
 
             axios
                 .post(apiHost + '/rest/schedule/create.php', snew)
