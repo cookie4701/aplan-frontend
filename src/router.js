@@ -10,6 +10,7 @@ import UserSetup from "./components/UserSetup";
 import EnterWorktime from "./components/EnterWorktime";
 import MonitorUserList from "./components/MonitorUserList";
 import MonitorSingleUser from "./components/MonitorSingleUser";
+import MonitorUserTimeModification from "./components/MonitorUserTimeModification";
 
 Vue.use(Router)
 
@@ -36,7 +37,7 @@ let router = new Router({
                         path: '/secure',
                         name: 'secure',
                         component: Secure,
-                        meta: { 
+                        meta: {
                                 requiresAuth: true
                         }
                 },
@@ -76,6 +77,14 @@ let router = new Router({
                         path: '/about',
                         name: 'about',
                         component: About
+                },
+                {
+                  path : '/monitoruser/timebonus/:id',
+                  name : 'timemodification',
+                  component : MonitorUserTimeModification,
+                  meta : {
+                      requiresAuth : true
+                  }
                 }
         ]
 })
@@ -86,9 +95,9 @@ router.beforeEach((to, from, next) => {
                         next()
                         return
                 }
-                next('/login') 
+                next('/login')
         } else {
-                next() 
+                next()
         }
 })
 

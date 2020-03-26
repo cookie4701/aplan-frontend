@@ -11,14 +11,12 @@
                 <button @click="onBtnTimeChange">Zeitanpassung</button>
             </div>
 
-            <div class="col-sm-1" v-if="!loading">
+            <div class="col-sm-9" v-if="!loading">
                 <img  v-if="hasError" src="../assets/static/redx.png" height="30" />
                 <span v-if="!hasError">{{infotext}}</span>
             </div>
 
-            <div class="col-sm-8">
-                <monitor-list-entry-day v-for="day in days"  :daydata="day" v-bind:key="day.id" class="m-1" ></monitor-list-entry-day>
-            </div>
+
 
 
 
@@ -31,16 +29,15 @@
     import axios from 'axios';
     import {apiHost} from "../config";
 
-    import MonitorListEntryDay from "./MonitorListEntryDay";
+    //import MonitorListEntryDay from "./MonitorListEntryDay";
     import {minutesToTime} from "../helper";
 
     export default {
         name: "MonitorListEntry",
-        components: {MonitorListEntryDay},
-        props: ['userinfo', 'rowNumber'],
+        //components: {MonitorListEntryDay},
+        props: ['userinfo', 'rowNumber', 'numberDays'],
         data: function () {
             return {
-                numberDays: 14,
                 startdate: '20',
                 activeColor : 'lightgreen',
                 loading : true,
@@ -85,7 +82,7 @@
                 }
             },
             onBtnTimeChange() {
-
+                this.$router.push({name : 'timemodification', params : { id : this.userinfo.id } });
             },
             onBtnDetailUser() {
                 this.$router.push({
