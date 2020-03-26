@@ -11,12 +11,12 @@
           </select>
 
           Datum der Modifikation
-          <input v-model="referenceDate">
+          <input v-model="referenceDate" size="6">
 
           Zeit
-          <input v-model="hours">
+          <input v-model="hours" size="1" class="form-control">
           :
-          <input v-model="minutes">
+          <input v-model="minutes" size="1" class="form-control">
 
           <button>Speichern</button>
           <button>Abbrechen</button>
@@ -29,6 +29,7 @@
 <script>
     import axios from 'axios';
     import {apiHost} from "../config";
+    import * as moment from 'moment';
 
     //import {minutesToTime} from "../helper";
 
@@ -36,9 +37,9 @@
       name : 'MonitorUserTimeModification',
       data: function() {
         return {
-          hours : 0,
-          minutes : 0,
-          referenceDate : Date(),
+          hours : '00',
+          minutes : '00',
+          referenceDate : moment().format("DD.MM.YYYY").toString(),
           typeModification : '+',
           reason : '',
           userinfo : {dname : ''},
@@ -59,6 +60,9 @@
           // eslint-disable-next-line no-console
           console.log(err);
         });
+
+        //this.referenceDate = moment().format("DD.MM.YYYY").toString()
+        //this.referenceDate = 'xxx';
 
       },
       methods : {
