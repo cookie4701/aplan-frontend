@@ -4,22 +4,25 @@
       {{userinfo.dname}}
 
         <div class="row">
-          Art der Modifikation
-          <select v-model="typeModification">
+          <div>{{errormessage}}</div>
+          <label for="selectModification">Art der Modifikation</label>
+          <select v-model="typeModification" class="form-control" id="selectModification">
             <option value="+">Hinzufügen</option>
             <option value="-">Abziehen</option>
           </select>
 
-          Datum der Modifikation
-          <input v-model="referenceDate" size="6">
+          <label for="dateModification" class="mt-2">Datum der Modifikation</label>
+          <input v-model="referenceDate" size="6" class="form-control" id="dateModification">
 
-          Zeit
-          <input v-model="hours" size="1" class="form-control">
-          :
-          <input v-model="minutes" size="1" class="form-control">
+          <label for="timefrom" class="mt-2">Zeit</label>
+          <input v-model="hours" size="1" class="form-control" id="timefrom">
+          <label for="timeto" class="mt-2">:</label>
+          <input v-model="minutes" size="1" class="form-control" id="timeto">
 
-          <button>Speichern</button>
-          <button>Abbrechen</button>
+          <label for="reason" class="mt-2">Begründung / Erläuterung</label>
+          <input v-model="reason" class="form-control" id="reason">
+          <button @click="submit" class="btn btn-primary mr-2 mt-2">Speichern</button>
+          <button class="btn btn-primary ml-2 mt-2">Abbrechen</button>
         </div>
 
       </div>
@@ -30,6 +33,7 @@
     import axios from 'axios';
     import {apiHost} from "../config";
     import * as moment from 'moment';
+    //import MonitorUserList from "MonitorUserList";
 
     //import {minutesToTime} from "../helper";
 
@@ -43,7 +47,8 @@
           typeModification : '+',
           reason : '',
           userinfo : {dname : ''},
-          id : -1
+          id : -1,
+          errormessage : ''
         }
       },
       mounted : function() {
@@ -67,7 +72,23 @@
       },
       methods : {
         submit() {
+          const param = {
+            moduserid : this.id,
+            moddate   : this.referenceDate,
+            modtime   : this.hours + ':' + this.minutes,
+            modreason : this.reason,
+            modtype   : this.typeModification
+          };
 
+          const req = axios.post(apiHost + '/rest/moderation/users/timemodification.php', param);
+          req.then( (response) => response.data)
+          .then( ()  => {
+            this.errormessage = 'Speichern erfolgreich.';
+            this.$router.push({path : '/monitoruserlist'});
+          })
+          .catch( () => {
+            this.errormessage = 'Speichern war nicht erfolgreich.';
+          });
         },
         loadUserinfo() {
           const refThis = this;

@@ -1,23 +1,48 @@
 <template>
-    <span>
-        <span v-if="!loadCompleted">
+    <tr>
+        <td v-if="!loadCompleted">
             <img src="../assets/static/loading.gif" height="30" />
-        </span>
+        </td>
 
-        <span v-if="loadCompleted && hasError">
+        <td v-else-if="loadCompleted && hasError">
             <img src="../assets/static/redx.png" height="30" />
-        </span>
-        <span v-if="loadCompleted && !hasError">
-            {{formattedDate}} ({{holliday}} / {{dayResult}})
-        </span>
+        </td>
 
-    </span>
+            <td v-if="loadCompleted && !hasError" >{{formattedDate}} {{messages}}</td>
+            <td v-if="loadCompleted && !hasError">{{holliday}}</td>
+            <td v-if="loadCompleted && !hasError">{{dayResult}}</td>
+            <td v-if="loadCompleted && !hasError" @click="popup">
+              <ul>
+                <li v-for="itm in loadedData.worktime" v-bind:key="itm.id" >{{itm.from}} : {{itm.to}}</li>
+              </ul>
+              <div v-if="popupWorkfields" class="tooltiptext">
+                {{formattedDate}}
+                <ul>
+                  <li v-for="itm in listWorkareas" v-bind:key="itm.rank">{{itm.descriptive}}: {{itm.hours}}</li>
+                </ul>
+                {{loadedData.comment}}
+              </div>
+            </td>
+            <td v-if="loadCompleted && !hasError">
+              <ul>
+                <li v-for="itm in loadedData.schedule" v-bind:key="itm.iditem">{{itm.timeFrom}} : {{itm.timeTo}}</li>
+              </ul>
+            </td>
+            <td v-if="loadCompleted && !hasError">
+              {{after20oclock}}
+            </td>
+            <td v-if="loadCompleted && !hasError">
+              {{recomp}}
+            </td>
+
+    </tr>
 </template>
 
 <script>
     import axios from 'axios';
     import {apiHost} from "../config";
     import {minutesToTime, timeToMinutes} from "../helper";
+    import * as moment from 'moment';
 
     export default {
         name: "MonitorListEntryDay",
@@ -29,37 +54,85 @@
                 hasError : false,
                 formattedDate : '',
                 holliday : '',
-                dayResult : ''
+                dayResult : '',
+                worktimeString : '',
+                scheduledTimeString : '',
+                messages : '',
+                popupWorkfields : false,
+                after20oclock : 0
             }
         },
         mounted() {
-            this.loadDayDataFromServer();
+          this.loadDayDataFromServer();
         },
         methods : {
+            popup() {
+              //this.$emit('message', 'boo');
+              this.popupWorkfields = true;
+              setTimeout(() => {
+                this.popupWorkfields = false;
+              }, 5000);
+            },
+            resetPopup() {
+              this.popupWorkfields = false;
+            },
             loadDayDataFromServer() {
+
+              this.daydata.qdate = moment(this.daydata.qdate, "DD.MM.YYYY").format("YYYY-MM-DD");
 
                 axios.post( apiHost + '/rest/moderation/users/single.php', this.daydata )
                     .then( data => data.data)
                     .then( (data) => {
                         this.loadedData = data;
                         this.loadCompleted = true;
-                        const month = parseInt(this.daydata.qdate.getMonth(),10) + 1 ;
-                        this.formattedDate = this.daydata.qdate.getDate() + '.' +
-                            month + '.' +
-                            this.daydata.qdate.getFullYear();
+                        this.formattedDate = moment(this.daydata.qdate, "YYYY-MM-DD").format("DD.MM.YYYY");
                     })
                     .then( () => {
-                        this.processData();
+
+                        return this.processData();
                     })
+
+                    .then( () => {
+                      return this.calcAfter20oclock();
+                    })
+
+                    .then( () => {
+                      const tmpDate = moment(this.daydata.qdate, "YYYY-MM-DD").format("DD.MM.YYYY");
+                      const data = {
+                        qdate : tmpDate,
+                        bonus : this.recomp
+                      };
+
+                      return this.$emit('update', data);
+                    })
+
                     .catch( (err) => {
                         this.messages = err;
                         this.hasError = true;
                         this.loadCompleted = true;
-                    })
-            },
-            processData() {
-                if ( this.loadedData !== undefined && this.loadedData.hollidayStatus !== undefined) {
 
+                    });
+            },
+
+            calcAfter20oclock() {
+              if ( this.loadedData.worktime === undefined ) return 0;
+
+              let result = 0;
+              for (let i = 0; i < this.loadedData.worktime.length; i++) {
+                if ( timeToMinutes(this.loadedData.worktime[i].to) > 1200 ) {
+                  const timeFrom =
+                    timeToMinutes( this.loadedData.worktime[i].from ) > 1200 ?
+                    timeToMinutes( this.loadedData.worktime[i].from ) : 1200;
+                  result -= timeFrom;
+                  result += timeToMinutes( this.loadedData.worktime[i].to );
+                }
+              }
+              this.after20oclock = result;
+            },
+
+            processData() {
+
+                if ( this.loadedData !== undefined && this.loadedData.hollidayStatus !== undefined) {
 
                     if (this.loadedData.hollidayStatus.hollidayId === 1) {
                         this.holliday = 'Norm.';
@@ -72,6 +145,8 @@
                     } else {
                         this.holliday = "Sonst.";
                     }
+                } else {
+                  this.holliday = 'Norm.';
                 }
 
                 let resultTime = 0;
@@ -101,10 +176,41 @@
 
 
             }
+        },
+        computed : {
+          listWorkareas() {
+            function myFilterFunction(val) {
+              if (val.hours.includes('00:00') ) {
+                return false;
+              } else {
+                return true;
+              }
+            }
+            return this.loadedData.workdone.filter(myFilterFunction);
+
+          },
+
+          recomp() {
+            return this.after20oclock * 0.2;
+          }
         }
-    }
+      }
+
 </script>
 
 <style scoped>
+.tooltiptext {
+  background-color: darkgray;
+  color: #fff;
+  text-align: left;
+  padding: 5px 0;
+  border-radius: 3px;
+  top: 10px;
+  left: 10px;
+  width: 100%;
 
+  /* Position the tooltip text - see examples below! */
+  position: relative;
+  z-index: 1000;
+}
 </style>

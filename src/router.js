@@ -11,6 +11,7 @@ import EnterWorktime from "./components/EnterWorktime";
 import MonitorUserList from "./components/MonitorUserList";
 import MonitorSingleUser from "./components/MonitorSingleUser";
 import MonitorUserTimeModification from "./components/MonitorUserTimeModification";
+import MonitorUserFreeze from "./components/MonitorUserFreeze";
 
 Vue.use(Router)
 
@@ -84,6 +85,14 @@ let router = new Router({
                   component : MonitorUserTimeModification,
                   meta : {
                       requiresAuth : true
+                  }
+                },
+                {
+                  path : '/monitoruser/freeze/:id',
+                  name : 'freezeinupt',
+                  component : MonitorUserFreeze,
+                  meta : {
+                    requiresAuth : true
                   }
                 }
         ]

@@ -9,6 +9,7 @@
             <div class="col-sm-2">
                 <button @click="onBtnDetailUser">Detail</button>
                 <button @click="onBtnTimeChange">Zeitanpassung</button>
+                <button @click="onBtnFreeze">Eingaben blockieren</button>
             </div>
 
             <div class="col-sm-9" v-if="!loading">
@@ -39,7 +40,7 @@
         data: function () {
             return {
                 startdate: '20',
-                activeColor : 'lightgreen',
+                activeColor : '#FF0036',
                 loading : true,
                 workdays : [],
                 currentStatus : [],
@@ -89,6 +90,12 @@
                     name : 'monitoruser',
                     params : { id : this.userinfo.id}
                 })
+            },
+            onBtnFreeze() {
+              this.$router.push({
+                name : 'freezeinupt',
+                params : { id : this.userinfo.id }
+              });
             },
             processData() {
                 this.infotext = '';
