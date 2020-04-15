@@ -1,28 +1,23 @@
 <template>
-    <div class="container-fluid">
+    <div class="row">
 
 
-        <div class="row" v-bind:style="{ background: activeColor }" >
-            <div class="col-sm-1">
+
+            <div class="col-sm" v-bind:style="{ background: activeColor }">
                 {{userinfo.displayname}}
             </div>
-            <div class="col-sm-2">
-                <button @click="onBtnDetailUser">Detail</button>
-                <button @click="onBtnTimeChange">Zeitanpassung</button>
-                <button @click="onBtnFreeze">Eingaben blockieren</button>
+            <div class="col-sm" v-bind:style="{ background: activeColor }">
+                <button @click="onBtnDetailUser" class="btn btn-secondary mt-1 ml-1">Detail</button>
+                <button @click="onBtnTimeChange" class="btn btn-secondary mt-1 ml-1">Zeitanpassung</button>
+                <button @click="onBtnFreeze" class="btn btn-secondary mt-1 ml-1">Eingaben blockieren</button>
             </div>
 
-            <div class="col-sm-9" v-if="!loading">
+            <div class="col-sm" v-if="!loading" v-bind:style="{ background: activeColor }">
                 <img  v-if="hasError" src="../assets/static/redx.png" height="30" />
                 <span v-if="!hasError">{{infotext}}</span>
             </div>
 
 
-
-
-
-
-        </div>
     </div>
 </template>
 

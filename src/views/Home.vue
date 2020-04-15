@@ -1,6 +1,7 @@
 <template>
         <div class="home">
-                this is home
+          
+                <img src="../assets/static/logo-jb.png" />
         </div>
 </template>
 
@@ -11,4 +12,4 @@ export default {
         components: {
         }
 }
-</script>  
+</script>

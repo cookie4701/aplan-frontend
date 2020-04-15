@@ -13,6 +13,7 @@ import hollidaysetup from "./modules/hollidaysetup";
 import vacationsetup from "./modules/vacationsetup";
 import workareas from "./modules/workareas";
 import weekdata from "./modules/weekdata";
+import periods from "./modules/periods";
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
@@ -27,7 +28,8 @@ export default new Vuex.Store({
         hollidaysetup,
         vacationsetup,
         workareas,
-        weekdata
+        weekdata,
+        periods
     },
     state: {
 
@@ -56,7 +58,7 @@ export default new Vuex.Store({
 
 
 
-        
+
 
     },
     actions: {

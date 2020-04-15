@@ -11,5 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 let baseURL = 'http://remote3.jugendbuero.be/arbeitsplan';
+let orgacode = 'jbuero2020';
 
 export const apiHost = baseURL;
+export const organization = orgacode;

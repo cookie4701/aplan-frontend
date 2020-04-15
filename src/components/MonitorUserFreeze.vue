@@ -1,5 +1,5 @@
 <template>
-  <div class="fluid-container">
+  <div class="container-fluid">
     <div class="row">
       {{username}} - {{message}}
     </div>
@@ -59,7 +59,7 @@ export default {
         qdate : tmpMoment.format("YYYY-MM-DD")
       };
 
-      var req = axios.post( apiHost + '/rest/moderation/user/freeze.php', params);
+      var req = axios.post( apiHost + '/rest/moderation/users/freeze.php', params);
       req.then(() => {
         this.$router.push({
           name : 'monitoruserlist'

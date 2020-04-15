@@ -1,36 +1,79 @@
 <template>
-    <div id="UserSetup">
-        <div>{{errorMsg}}</div>
+    <div id="UserSetup" class="container-fluid">
+        <div class="row">{{errorMsg}}</div>
 
-        <h3>Allgemeine Daten</h3>
+        <div class="row bg-info customtitle">Allgemeine Daten (Vorgabe; nicht veränderbar)</div>
 
-        <label for="username">Benutzername:</label>
-        <input type="text" id="username" v-model="userinfo.username">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="username">Benutzername:</label>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" id="username" v-model="userinfo.username" disabled>
+          </div>
+        </div>
 
-        <label for="startdate">Start Berechnungszeitraum</label>
-        <input type="text" id="startdate" v-model="userinfo.startdate">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="startdate">Start Berechnungszeitraum</label>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" id="startdate" v-model="userinfo.startdate" disabled>
+          </div>
+        </div>
 
-        <label for="overhoursbefore">Überstunden Übertrag vom letzten Berechnungszeitraum</label>
-        <input type="text" id="overhoursbefore" v-model="userinfo.overhoursbefore">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="overhoursbefore">Überstunden Übertrag vom letzten Berechnungszeitraum</label>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" id="overhoursbefore" v-model="userinfo.overhoursbefore" disabled>
+          </div>
+        </div>
 
-        <h3>Arbeitszeiten</h3>
+        <div class="row bg-info customtitle">Stundenplan anlegen</div>
 
-        <label for="newSchedule">Neuen Zeitraum anlegen</label>
-        <input type="text" id="newSchedule" v-model="scheduleNew.schedulename">
+        <div class="row">
+          <div class="col-sm-1">
+            <label for="newSchedule">Neuen Zeitraum anlegen</label>
+          </div>
+          <div class="col-sm-2">
+            <input type="text" id="newSchedule" v-model="scheduleNew.schedulename">
+          </div>
 
-        <label for="newScheduleStart">Beginn</label>
-        <input type="text" id="newScheduleStart" v-model="scheduleNew.scheduleStart">
+          <div class="col-sm-1">
+            <label for="newScheduleStart">Beginn</label>
+          </div>
 
-        <label for="newScheduleEnd">Ende</label>
-        <input type="text" id="newScheduleEnd" v-model="scheduleNew.scheduleEnd">
+          <div class="col-sm-3">
+            <input type="text" id="newScheduleStart" v-model="scheduleNew.scheduleStart">
+          </div>
 
-        <button @click="doSaveScheduleEntry">Eintragen</button>
+          <div class="col-sm-1">
+            <label for="newScheduleEnd">Ende</label>
+          </div>
+
+          <div class="col-sm-3">
+            <input type="text" id="newScheduleEnd" v-model="scheduleNew.scheduleEnd">
+          </div>
+
+          <div class="col-sm-1">
+            <button @click="doSaveScheduleEntry">Eintragen</button>
+          </div>
+
+        </div>
+
+        <div class="row bg-info customtitle">Stundenpläne bearbeiten</div>
 
         <div id="worktimesListe">
-            <ul>
-                <li v-for="listItem in scheduleListItems" v-bind:key="listItem.idSchedule">
-                    <button @click="setActiveEditScheduleListItem(listItem)">Bearbeiten</button>
-                    <div v-if="isActiveEditScheduleListItem===listItem.idSchedule">
+            <ul class="list-unstyled">
+                <li v-for="listItem in scheduleListItems" v-bind:key="listItem.idSchedule" class="mt-2 mb-2 ml-2">
+                    <div class="row">
+                      <div class="col-sm-2">
+                    <button @click="setActiveEditScheduleListItem(listItem)" class="btn btn-primary">Bearbeiten</button>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="d-inline" v-if="isActiveEditScheduleListItem===listItem.idSchedule">
                         <input type="text" v-model="editSchedulesListItem.label" v-on:keydown.tab="updateListeItem()" />
                         <input type="text" v-model="editSchedulesListItem.startdate" v-on:keydown.tab="updateListeItem()"/>
                         <input type="text" v-model="editSchedulesListItem.enddate" v-on:keydown.tab="updateListeItem()">
@@ -41,7 +84,7 @@
                             {{itm.dayname}} : {{itm.time_from}} - {{itm.time_to}} <button @click="removeScheduleItem(itm.idScheduleItem)">X</button>
                         </div>
 
-                        <div>
+                        <div class="d-inline">
                             Geplante Arbeitszeit: {{timeDay}}
                         </div>
 
@@ -55,79 +98,115 @@
                         <input type="text" v-model="newScheduleItem.time_to">
                         <button @click="saveNewScheduleItem()">+</button>
 
-                        <div><button @click="unsetActiveEditSchedule()">Schliessen</button> </div>
+                        <div class="d-inline"><button @click="unsetActiveEditSchedule()">Schliessen</button> </div>
 
                     </div>
-                    <div v-else>{{listItem.label}}: {{listItem.startdate}} - {{listItem.enddate}}</div>
+                    <div class="d-inline" v-else>{{listItem.label}}: {{listItem.startdate}} - {{listItem.enddate}}</div>
+                  </div>
+                </div>
                 </li>
+
             </ul>
         </div>
 
-        <h3>Fahrtkostenentschädigunen</h3>
+        <div class="row customtitle bg-info">Fahrtkostenentschädigunen (Auflistung)</div>
 
         <div>
-            <ul>
+            <ul class="list-unstyled">
                 <li v-for="compensation in driveCompensations" v-bind:key="compensation.idDrive">
-                    {{compensation.startdate}} - {{compensation.enddate}} : {{compensation.val}}
-                    <button @click="deleteDriveCompensation(compensation)">X</button>
+                    <div class="row">
+                      <div class="col-sm-1">{{compensation.startdate}}</div>
+                      <div class="col-sm-1">{{compensation.enddate}}</div>
+                      <div class="col-sm-1">{{compensation.val}}</div>
+                      <div class="col-sm-1"><button @click="deleteDriveCompensation(compensation)" class="btn btn-danger">X</button></div>
+                    </div>
                 </li>
             </ul>
         </div>
 
         <div>
 
-            <h4>Neuen Datensatz erzeugen</h4>
-            Datum ab: <input type="text" v-model="driveCompensationNew.startdate" />
-            Datum bis: <input type="text" v-model="driveCompensationNew.enddate" />
-            Entschädigung in Euro (0,1234 bspw.): <input type="text" v-model="driveCompensationNew.val" />
-            <button @click="createDriveCompensation()">Hinzufügen</button>
+            <div class="row customtitle bg-info">Neuen Datensatz Fahrtkostenentschädigung erzeugen</div>
+            <div class="row">
+              <div class="col-sm-2">Datum ab:</div>
+              <div class="col-sm-1"><input type="text" v-model="driveCompensationNew.startdate" /> </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">Datum bis:</div>
+              <div class="col-sm-1"><input type="text" v-model="driveCompensationNew.enddate" /></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">Entschädigung in Euro (0,1234 bspw.):</div>
+              <div class="col-sm-1"><input type="text" v-model="driveCompensationNew.val" /></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-1"><button class="btn btn-secondary" @click="createDriveCompensation()">Hinzufügen</button></div>
+            </div>
         </div>
 
 
 
-        <h3>Urlaubsansprüche</h3>
+        <div class="row customtitle bg-info">Urlaubsansprüche (Auflistung)</div>
 
-        <ul>
+        <ul class="list-unstyled">
             <li v-for="holliday in hollidaysetup" v-bind:key="holliday.idHolliday">
-                {{holliday.startdate}} - {{holliday.enddate}}: {{holliday.nbrdays}} <button @click="deleteHollidaySetup(holliday.idHolliday)">X</button>
+              <div class="row">
+                <div class="col-sm-1">{{holliday.startdate}}</div>
+                <div class="col-sm-1">{{holliday.enddate}}</div>
+                <div class="col-sm-1">{{holliday.nbrdays}}</div>
+                <div class="col-sm-1"><button @click="deleteHollidaySetup(holliday.idHolliday)" class="btn btn-danger">X</button></div>
+              </div>
             </li>
         </ul>
 
-        <div>
-            <label for="hollidaynewstartdate">Startdatum</label>
-            <input type="text" id="hollidaynewstartdate" v-model="hollidaynew.startdate" />
+        <div class="row customtitle bg-info">Neuen Urlaubsanspruch anlegen</div>
 
-            <label for="hollidaynewenddate">Enddatum</label>
-            <input type="text" id="hollidaynewenddate" v-model="hollidaynew.enddate" />
-
-            <label for="hollidaynewnbr">Anzahl Tage</label>
-            <input type="text" id="hollidaynewnbr" v-model="hollidaynew.nbrdays" />
-
-            <button @click="createHollidaySetup(hollidaynew)">+</button>
+        <div class="row">
+            <div class="col-sm"><label for="hollidaynewstartdate">Startdatum</label></div>
+            <div class="col-sm"><input type="text" id="hollidaynewstartdate" v-model="hollidaynew.startdate" /></div>
+        </div>
+        <div class="row">
+            <div class="col-sm"><label for="hollidaynewenddate">Enddatum</label></div>
+            <div class="col-sm"><input type="text" id="hollidaynewenddate" v-model="hollidaynew.enddate" /></div>
+        </div>
+        <div class="row">
+            <div class="col-sm"><label for="hollidaynewnbr">Anzahl Tage</label></div>
+            <div class="col-sm"><input type="text" id="hollidaynewnbr" v-model="hollidaynew.nbrdays" /></div>
+        </div>
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm"><button @click="createHollidaySetup(hollidaynew)" class="btn btn-secondary">+</button></div>
         </div>
 
-        <h3>Feiertagsansprüche</h3>
+        <div class="row customtitle bg-info">Feiertagsansprüche (Auflistung)</div>
 
-        <ul>
+        <ul class="list-unstyled">
             <li v-for="vacation in vacationsetup" v-bind:key="vacation.idVacation">
-                {{vacation.startdate}} - {{vacation.enddate}}: {{vacation.nbrdays}} <button @click="deleteVacationSetup(vacation.idVacation)">X</button>
+              <div class="row">
+                <div class="col-sm">{{vacation.startdate}}</div>
+                <div class="col-sm">{{vacation.enddate}}</div>
+                <div class="col-sm">{{vacation.nbrdays}}</div>
+                <div class="col-sm"><button @click="deleteVacationSetup(vacation.idVacation)" class="btn btn-danger">X</button></div>
+              </div>
             </li>
         </ul>
 
-        <div>
-            <label for="vacationnewstartdate">Startdatum</label>
-            <input type="text" id="vacationnewstartdate" v-model="vacationdaysnew.startdate" />
+        <div class="row customtitle bg-info">Feiertagsansprüche (Neuer Datensatz anlegen)</div>
+        <div class="row">
+            <div class="col-sm"><label for="vacationnewstartdate">Startdatum</label></div>
+            <div class="col-sm"><input type="text" id="vacationnewstartdate" v-model="vacationdaysnew.startdate" /></div>
 
-            <label for="vacationnewenddate">Enddatum</label>
-            <input type="text" id="vacationnewenddate" v-model="vacationdaysnew.enddate" />
+            <div class="col-sm"><label for="vacationnewenddate">Enddatum</label></div>
+           <div class="col-sm">  <input type="text" id="vacationnewenddate" v-model="vacationdaysnew.enddate" /></div>
 
-            <label for="vacationnewnbrdays">Anzahl Tage</label>
-            <input type="text" id="vacationnewnbrdays" v-model="vacationdaysnew.nbrdays" />
+            <div class="col-sm"><label for="vacationnewnbrdays">Anzahl Tage</label></div>
+            <div class="col-sm"><input type="text" id="vacationnewnbrdays" v-model="vacationdaysnew.nbrdays" /></div>
 
-            <button @click="createVacationSetup(vacationdaysnew)">+</button>
+            <div class="col-sm"><button @click="createVacationSetup(vacationdaysnew)" class="btn btn-secondary">+</button></div>
         </div>
 
-        <h3>Arbeitsbereiche</h3>
+        <div class="row customtitle bg-info">Arbeitsbereiche</div>
 
         <table id="tblWorkareas">
             <tr>
@@ -143,7 +222,7 @@
             </tr>
         </table>
 
-        <button @click="addWorkarea">Bereich hinzufügen</button>
+        <button @click="addWorkarea" class="btn btn-secondary">Bereich hinzufügen</button>
 
 
     </div>
@@ -438,5 +517,8 @@
 </script>
 
 <style scoped>
-
+.customtitle {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
 </style>

@@ -1,29 +1,33 @@
 <template>
-  <div>
-    <div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
       Anzahl Benutzer anzeigen
-      <select id="nbruser" v-model="nbruser" @change="changeSelect()">
+      <select id="nbruser" v-model="nbruser" @change="executeRouteChange()">
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
       </select>
+    </div>
+
+    <div class="col-sm">
 
       Seite auswählen
-      <select id="pagenumber" v-model="pagenumber" @change="changeSelect()">
+      <select id="pagenumber" v-model="pagenumber" @change="executeRouteChange()">
         <option v-for="opt in pagenbroptions" v-bind:value="opt.pnumber" v-bind:key="opt.id">{{opt.pnumber}}</option>
       </select>
 
     </div>
 
-    <div>
-        <MonitorListEntry class="m-2" v-for="(datarow, index) in userdata" v-bind:key="datarow.id" :userinfo="datarow" :row-number="index" :numberDays='3' ></MonitorListEntry>
     </div>
+
+        <MonitorListEntry class="m-2" v-for="(datarow, index) in userdata" v-bind:key="datarow.id" :userinfo="datarow" :row-number="index" :numberDays='3' ></MonitorListEntry>
   </div>
 </template>
 
 <script>
     import axios from 'axios';
-    import {apiHost} from "../config";
+    import {apiHost, organization} from "../config";
     import MonitorListEntry from "./MonitorListEntry";
 
     export default {
@@ -40,28 +44,46 @@
             }
         },
         methods : {
+            executeRouteChange() {
+              this.$router.push(
+                {
+                  name : 'monitoruserlist',
+                  params : {
+                    page : this.pagenumber,
+                    number : this.nbruser
+                  }
+                });
+            },
+            changeSelectNbr() {
+              return this.getNumberPages()
+              .then( () => {
+                if (this.pagenumber > this.pagenbroptions.length) {
+                  this.pagenumber = 1;
+                }
+
+                this.changeSelect();
+              })
+              .catch( (err) => {
+                this.messages += err;
+              });
+
+
+
+            },
             changeSelect() {
-              this.messages = '';
+              //this.messages = '';
               var refThis = this;
               var prom = new Promise( function(resolve) {
                 if ( refThis.userdata.length > 0 ) {
                   refThis.userdata.splice(0, refThis.userdata.length);
-                  refThis.messages += ' userdata is truncated ';
-                } else {
-                  refThis.messages += ' not truncating userdata ' + refThis.userdata.length + ' ';
+
                 }
 
-                refThis.componentInit = false;
+                refThis.componentInit = true;
                 resolve(true);
               });
 
-
               prom.then( () => {
-                this.messages += ' executing getNumberPages ';
-                return this.getNumberPages();
-              }).
-              then( () => {
-                this.messages += ' executing refreshUserList ';
                 return this.refreshUserList();
               }).
               catch( (err) => {
@@ -93,7 +115,7 @@
                   });
             },
              getNumberPages() {
-              return axios.get( apiHost + '/rest/moderation/users/count.php?orgacode=jbuero2020')
+              return axios.get( apiHost + '/rest/moderation/users/count.php?orgacode=' + organization)
                 .then ( data => data.data )
                 .then( data => {
                   const nbrUsers = data.nbr_users;
@@ -115,12 +137,38 @@
                 .catch( (err) => {
                   this.messages = err;
                 })
+            },
+            fxMounted() {
+              let page = 1;
+              let number = 5;
+              if (this.$route.params) {
+                if ( this.$route.params.page ) {
+                  page = this.$route.params.page;
+
+                }
+                if ( this.$route.params.number) {
+                  number = this.$route.params.number;
+                }
+              }
+
+
+              this.nbruser = number;
+              this.pagenumber = page;
+
+              this.changeSelectNbr();
             }
         },
 
         mounted() {
-            this.changeSelect();
-        }
+          this.fxMounted();
+        },
+
+        watch:{
+    //$route (to, from){
+    $route: function() {
+        this.fxMounted();
+    }
+}
     }
 </script>
 
