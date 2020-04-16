@@ -7,11 +7,46 @@ export default {
         statusPeriodsFetch : 'none',
         statusPeriodsDelete : 'none',
         statusPeriodsCreate : 'none',
-        periods : []
+        statusUserPeriodFetch : 'none',
+        statusUserPeriodCreate : 'none',
+        statusUserPeriodUpdate : 'none',
+        periods : [],
+        userperiod : []
     },
     getters: {},
     setters: {},
     mutations: {
+        updateUserPeriodsPending(status) {
+          status.statusUserPeriodUpdate = 'pending';
+        },
+        updateUserPeriodsError(status) {
+          status.statusUserPeriodUpdate = 'error';
+        },
+        updateUserPeriodsSuccess(status) {
+          status.statusUserPeriodUpdate = 'success';
+        },
+        fetchUserPeriodSuccess(status, data) {
+          status.statusUserPeriodFetch = 'success';
+          status.userperiod.splice(0, status.userperiod.length);
+          for (let i=0; i < data.periods.length; i++ ) {
+            data.periods[i].start = moment(data.periods[i].start, "YYYY-MM-DD").format("DD.MM.YYYY");
+            data.periods[i].end = moment(data.periods[i].end, "YYYY-MM-DD").format("DD.MM.YYYY");
+
+            if ( data.periods[i].minutes === null) {
+              data.periods[i].minutes = 0;
+            }
+            status.userperiod.push(
+              data.periods[i]
+            );
+          }
+        },
+        fetchUserPeriodPending(status) {
+          status.statusUserPeriodFetch = 'pending';
+        },
+        fetchUserPeriodError(status) {
+          status.statusUserPeriodFetch = 'error';
+          status.userperiod.splice(0, this.userperiod.length);
+        },
         fetchPeriodsSuccess(status, data) {
             status.statusPeriodsFetch = 'success';
 
@@ -44,7 +79,7 @@ export default {
             for (let i = 0; i < data.length; i++) {
               status.periods.push(data[i]);
             }
-            
+
         },
         createPeriodsPending(status) {
             status.statusPeriodsCreate = 'pending'
@@ -132,6 +167,33 @@ export default {
                 .catch(() => {
                     commit('deletePeriodsError');
                 })
+        },
+        fetchUserPeriods({commit}, userid) {
+          commit('fetchUserPeriodPending');
+          return axios
+            .get(apiHost + '/rest/moderation/periods/userperiods.php?userid=' + userid)
+            .then( response => response.data )
+            .then( data => {
+              commit('fetchUserPeriodSuccess', data);
+            })
+            .catch(() => {
+              commit('fetchUserPeriodError');
+            });
+
+        },
+        updateUserPeriods({commit}, userdata) {
+          commit('updateUserPeriodsPending');
+
+          return axios
+            .post(apiHost + '/rest/moderation/periods/userdata', userdata)
+            .then( response => response.data)
+            .then( (data) => {
+              if ( data.status === 200 ) {
+                commit('updateUserPeriodsSuccess');
+              } else {
+                commit('updateUserPeriodsError');
+              }
+            })
         }
     }
 }

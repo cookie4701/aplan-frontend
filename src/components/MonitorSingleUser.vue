@@ -28,18 +28,27 @@
       <div class="row">
         Berechnete Ausgleichszeit (nach 20 Uhr): {{bonusTotal}} Minuten
       </div>
+
+      <div class="row">
+        Vorgabe Überstunden pro Periode <button @click="showOverhours=!showOverhours" class="btn btn-secondary">&raquo;</button>
+      </div>
+      <div class="row">
+        <MonitorUserPeriods :uid="singleuserid" v-if="showOverhours"> </MonitorUserPeriods>
+      </div>
+
     </div>
 </template>
 
 <script>
     import * as moment from 'moment';
     import MonitorListEntryDay from "./MonitorListEntryDay";
+    import MonitorUserPeriods from "./MonitorUserPeriods";
     import axios from 'axios';
     import {apiHost} from "../config";
 
     export default {
         name: "MonitorSingleUser",
-        components : {MonitorListEntryDay},
+        components : {MonitorListEntryDay, MonitorUserPeriods},
         data : function() {
           return {
             uname : '',
@@ -53,7 +62,8 @@
             momentEnddate : moment().subtract(1, 'days'),
             days : [],
             singleuserid : 0,
-            globalIndex : 0
+            globalIndex : 0,
+            showOverhours : false
           }
         },
         methods : {

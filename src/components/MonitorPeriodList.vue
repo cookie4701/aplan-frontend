@@ -51,7 +51,7 @@ export default {
     };
   },
   methods : {
-    deletePeriod(id) {
+     deletePeriod(id) {
       var req = this.$store.dispatch('deletePeriod', id);
 
       req.then( () => {
