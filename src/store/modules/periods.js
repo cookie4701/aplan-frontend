@@ -22,8 +22,20 @@ export default {
         updateUserPeriodsError(status) {
           status.statusUserPeriodUpdate = 'error';
         },
-        updateUserPeriodsSuccess(status) {
+        updateUserPeriodsSuccess(status, data) {
           status.statusUserPeriodUpdate = 'success';
+          status.userperiod.splice(0, status.userperiod.length);
+          for (let i=0; i < data.periods.length; i++ ) {
+            data.periods[i].start = moment(data.periods[i].start, "YYYY-MM-DD").format("DD.MM.YYYY");
+            data.periods[i].end = moment(data.periods[i].end, "YYYY-MM-DD").format("DD.MM.YYYY");
+
+            if ( data.periods[i].minutes === null) {
+              data.periods[i].minutes = 0;
+            }
+            status.userperiod.push(
+              data.periods[i]
+            );
+          }
         },
         fetchUserPeriodSuccess(status, data) {
           status.statusUserPeriodFetch = 'success';
@@ -185,11 +197,11 @@ export default {
           commit('updateUserPeriodsPending');
 
           return axios
-            .post(apiHost + '/rest/moderation/periods/userdata', userdata)
+            .post(apiHost + '/rest/moderation/periods/userperiods.php', userdata)
             .then( response => response.data)
             .then( (data) => {
               if ( data.status === 200 ) {
-                commit('updateUserPeriodsSuccess');
+                commit('updateUserPeriodsSuccess', data);
               } else {
                 commit('updateUserPeriodsError');
               }

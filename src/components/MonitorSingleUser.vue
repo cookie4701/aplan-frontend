@@ -29,10 +29,12 @@
         Berechnete Ausgleichszeit (nach 20 Uhr): {{bonusTotal}} Minuten
       </div>
 
-      <div class="row">
-        Vorgabe Überstunden pro Periode <button @click="showOverhours=!showOverhours" class="btn btn-secondary">&raquo;</button>
+      <div class="row d-print-none">
+        <div class="col-sm-4">
+        <button @click="showOverhours=!showOverhours" class="btn btn-secondary form-control mt-1 mb-1">{{buttonLabel}}</button>
       </div>
-      <div class="row">
+      </div>
+      <div class="row d-print-none">
         <MonitorUserPeriods :uid="singleuserid" v-if="showOverhours"> </MonitorUserPeriods>
       </div>
 
@@ -63,7 +65,8 @@
             days : [],
             singleuserid : 0,
             globalIndex : 0,
-            showOverhours : false
+            showOverhours : false,
+            buttonLabel : 'Vorgabe Überstunden pro Periode einblenden'
           }
         },
         methods : {
@@ -142,6 +145,15 @@
           debugMessage(str) {
             // eslint-disable-next-line no-console
             console.log(str);
+          }
+        },
+        watch : {
+          showOverhours(newValue) {
+            if (newValue) {
+              this.buttonLabel = 'Vorgabe Überstunden pro Periode ausblenden';
+            } else {
+              this.buttonLabel = 'Vorgabe Überstunden pro Periode einblenden';
+            }
           }
         },
         mounted : function () {

@@ -1,7 +1,7 @@
 <template>
 
   <div id="app" class="container-fluid">
-    <div class="row">
+    <div class="row d-print-none">
       <b-button v-if="isLoggedIn" to="/" class="col m-md-2" variant="primary">Home</b-button>
       <b-button v-if="isLoggedIn" to="worktimeinput" class="col m-md-2" variant="primary">Erledigte Arbeit eintragen</b-button>
       <b-button v-if="isLoggedIn" to="userinfo" class="col m-md-2" variant="primary">Benutzerinformationen anpassen</b-button>

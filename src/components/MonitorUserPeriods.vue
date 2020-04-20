@@ -16,7 +16,7 @@
       </div>
 
       <div class="col-sm">
-        {{itm.minutes}}
+        <input v-model="itm.minutes" class="form-control" v-on:blur="update(itm)">
       </div>
 
     </div>
@@ -26,7 +26,6 @@
 
 <script>
 import { mapState } from 'vuex';
-//import * as moment from 'moment'
 
 export default {
   name : 'MonitorUserPeriods',
@@ -45,6 +44,15 @@ export default {
     .catch( (err) => {
       this.message = err;
     })
+  },
+  methods : {
+    update(datarow) {
+        datarow.idUser = this.uid;
+        var req = this.$store.dispatch('updateUserPeriods', datarow);
+        req.catch( err => {
+          this.message = err;
+        })
+    }
   },
   computed : {
     ...mapState({
