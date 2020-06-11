@@ -1,5 +1,7 @@
 <template>
   <div class="fluid-container">
+  <h1>Statistik für {{userinfo.username}}</h1>
+
     <SelectDateForStat @godate="refreshDate($event)" class="d-print-none"> </SelectDateForStat>
 
     <div class="d-none d-print-block">
@@ -47,6 +49,7 @@ import axios from 'axios';
 import {apiHost} from "../config";
 import SelectDateForStat from "./SelectDateForStat";
 import * as moment from 'moment';
+import { mapState } from 'vuex';
 
 export default {
   name : 'Stats',
@@ -63,6 +66,9 @@ export default {
   },
   components : {
     SelectDateForStat
+  },
+  mounted () {
+    this.$store.dispatch('userdataFromServer');
   },
   methods : {
     refreshDate(eventdata) {
@@ -133,7 +139,13 @@ export default {
         }
       }
     }
-  }
+  },
+  computed:
+      {
+          ...mapState({
+              userinfo : state  => state.userinfo.userinfo
+          }),
+      }
 
 }
 
