@@ -12,7 +12,7 @@ import MonitorUserList from "./components/MonitorUserList";
 import MonitorSingleUser from "./components/MonitorSingleUser";
 import MonitorUserTimeModification from "./components/MonitorUserTimeModification";
 import MonitorUserFreeze from "./components/MonitorUserFreeze";
-import Stats from "./components/Stats"
+import Stats from "./components/Stats";
 import Businesstrip from "./components/Businesstrip";
 import MonitorPeriodCreate from "./components/MonitorPeriodCreate";
 import MonitorPeriodList from "./components/MonitorPeriodList";

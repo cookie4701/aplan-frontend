@@ -3,10 +3,10 @@
   <div id="app" class="container-fluid">
     <div class="row d-print-none">
       <b-button v-if="isLoggedIn" to="/" class="col m-md-2" variant="primary">Home</b-button>
-      <b-button v-if="isLoggedIn" to="worktimeinput" class="col m-md-2" variant="primary">Erledigte Arbeit eintragen</b-button>
-      <b-button v-if="isLoggedIn" to="userinfo" class="col m-md-2" variant="primary">Benutzerinformationen anpassen</b-button>
-      <b-button v-if="isLoggedIn" to="selftstat" class="col m-md-2" variant="primary">Statistik</b-button>
-      <b-button v-if="isLoggedIn" to="businesstrip" class="col m-md-2" variant="primary">Fahrten</b-button>
+      <b-button v-if="isLoggedIn" to="/worktimeinput" class="col m-md-2" variant="primary">Erledigte Arbeit eintragen</b-button>
+      <b-button v-if="isLoggedIn" to="/userinfo" class="col m-md-2" variant="primary">Benutzerinformationen anpassen</b-button>
+      <b-button v-if="isLoggedIn" to="/selfstat" class="col m-md-2" variant="primary">Statistik</b-button>
+      <b-button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2" variant="primary">Fahrten</b-button>
 
       <b-dropdown id="dropdownmoderation" text="Moderation" class="m-md-2 col btn btn-secondary" v-if="isLoggedIn">
         <b-dropdown-item>
