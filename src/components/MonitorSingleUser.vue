@@ -11,10 +11,46 @@
 
       </div>
 
+      <div class="row d-print-none">
+        <div class="col">
+          <label for="displayColDate">Datum</label>
+          <input type="checkbox" v-model="showCols.colDate" id="displayColDate">
+        </div>
+        <div class="col">
+          <label for="displayColType">Tagestyp</label>
+          <input type="checkbox" v-model="showCols.colDayType" id="displayColType">
+        </div>
+        <div class="col">
+          <label for="displayColDayResult">Tagesergebnis</label>
+          <input type="checkbox" v-model="showCols.colDayResult" id="displayColDayResult">
+        </div>
+        <div class="col">
+          <label for="displayColDayPerformance">Geleistete Stunden</label>
+          <input type="checkbox" v-model="showCols.colDayPerformed" id="displayColDayPerformance">
+        </div>
+        <div class="col">
+          <label for="displayColDayWorkDescription">Tagesbeschreibung</label>
+          <input type="checkbox" v-model="showCols.colDayWorkDescription" id="displayColDayWorkDescription">
+        </div>
+        <div class="col">
+          <label for="displayColDayToDo">Zu leistende Stunden</label>
+          <input type="checkbox" v-model="showCols.colDayToDo" id="displayColDayToDo">
+        </div>
+        <div class="col">
+          <label for="displayColDayTimeEvening">Arbeit nach 20 Uhr</label>
+          <input type="checkbox" v-model="showCols.colDayTimeEvening" id="displayColDayTimeEvening">
+        </div>
+        <div class="col">
+          <label for="displayColDayBonusTime">Ausgleichszeit</label>
+          <input type="checkbox" v-model="showCols.colDayBonusTime" id="displayColDayBonusTime">
+        </div>
+
+      </div>
+
       <div class="row">
         <table class="table table-bordered" style="table-layout:fixed;">
           <tr>
-            <td>Datum</td>
+            <td v-if="showCols.colDate">Datum</td>
             <td>Tag Typ</td>
             <td>Tag Ergebnis</td>
             <td>Geleistete Stunden</td>
@@ -66,7 +102,17 @@
             singleuserid : 0,
             globalIndex : 0,
             showOverhours : false,
-            buttonLabel : 'Vorgabe Überstunden pro Periode einblenden'
+            buttonLabel : 'Vorgabe Überstunden pro Periode einblenden',
+            showCols : {
+              colDate : true,
+              colDayType : true,
+              colDayResult : true,
+              colDayPerformed : true,
+              colDayWorkDescription : true,
+              colDayToDo : true,
+              colDayTimeEvening : true,
+              colDayBonusTime : true
+            }
           }
         },
         methods : {
