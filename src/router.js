@@ -17,6 +17,8 @@ import Businesstrip from "./components/Businesstrip";
 import MonitorPeriodCreate from "./components/MonitorPeriodCreate";
 import MonitorPeriodList from "./components/MonitorPeriodList";
 import MonitorPeriod from "./components/MonitorPeriod";
+import MonitorUserSchedulesList from "./components/MonitorUserSchedulesList";
+
 
 Vue.use(Router)
 
@@ -139,6 +141,14 @@ let router = new Router({
       path : '/monitoring/period',
       name : 'monitorperiod',
       component : MonitorPeriod,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path : '/monitoring/schedules/:userId',
+      name : 'schedulesuser',
+      component : MonitorUserSchedulesList,
       meta : {
         requiresAuth : true
       }

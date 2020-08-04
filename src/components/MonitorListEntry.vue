@@ -7,6 +7,7 @@
                 {{userinfo.displayname}}
             </div>
             <div class="col-sm" v-bind:style="{ background: activeColor }">
+                <button @click="onBtnScheduleUser" class="btn btn-secondary mt-1 ml-1">Stundenpläne anpassen</button>
                 <button @click="onBtnDetailUser" class="btn btn-secondary mt-1 ml-1">Detail</button>
                 <button @click="onBtnTimeChange" class="btn btn-secondary mt-1 ml-1">Zeitanpassung</button>
                 <button @click="onBtnFreeze" class="btn btn-secondary mt-1 ml-1">Eingaben blockieren</button>
@@ -89,6 +90,12 @@
             onBtnFreeze() {
               this.$router.push({
                 name : 'freezeinupt',
+                params : { id : this.userinfo.id }
+              });
+            },
+            onBtnScheduleUser() {
+              this.$router.push({
+                name : 'schedulesuser',
                 params : { id : this.userinfo.id }
               });
             },
