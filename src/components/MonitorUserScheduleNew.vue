@@ -37,7 +37,7 @@
 <script>
 import * as moment from 'moment';
 import axios from 'axios';
-import {apiHoat} from "../config";
+import {apiHost} from "../config";
 
 
 export default {
@@ -55,7 +55,7 @@ export default {
 		    //axios post
 	    },
 	    checkDate(datestring) {
-		   return moment(datestring, "DD.MM.YYYY").isValid();  
+		   return moment(datestring, "DD.MM.YYYY").isValid();
 	    },
 	    checkData() {
 		    if (
