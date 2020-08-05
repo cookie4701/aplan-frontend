@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="container-fluid">
-      <div >
+      <div class="row" >
         <Entry v-for="lstitem in schedules" v-bind:key="lstitem.idSchedule" v-bind:itemdata="lstitem"> </Entry>
 
       </div>
-      {{id}}
-      {{tmp}}
+
+      <div class="row">
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -16,6 +19,7 @@
 import axios from 'axios';
 import {apiHost} from "../config";
 import MonitorUserScheduleListEntry from './MonitorUserScheduleListEntry';
+
 import * as moment from 'moment';
 
 export default {
@@ -27,16 +31,8 @@ export default {
     return {
       id : 0,
       tmp : '',
-      schedules : [],
-      daynames : [
-        {name :'Montag', value : 0},
-        {name : 'Dienstag', value : 1},
-        {name : 'Mittwoch', value : 2 },
-        {name : 'Donnerstag', value :3 },
-        {name: 'Freitag', value : 4 },
-        {name : 'Samstag', value : 5 },
-        {name: 'Sonntag', value : 6 }
-      ]
+      schedules : []
+
     }
   },
   methods : {
@@ -57,6 +53,7 @@ export default {
           data[i].startdate = moment(data[i].startdate, "YYYY-MM-DD").format("DD.MM.YYYY") ;
           data[i].enddate = moment(data[i].enddate, "YYYY-MM-DD").format("DD.MM.YYYY") ;
           data[i].number = i;
+          data[i].userId = this.id;
           this.schedules.push(data[i]);
         }
       })
