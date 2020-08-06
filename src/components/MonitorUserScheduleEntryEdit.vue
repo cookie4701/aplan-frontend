@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container-fluid mt-2 mb-2">
 
 
-      <div class="row" v-for="itm in scheduleDetails" v-bind:key="itm.idScheduleItem">
+      <div class="row mt-6 mb-6" v-for="itm in scheduleDetails" v-bind:key="itm.idScheduleItem">
         <div class="col"> {{itm.dayname}} </div>
         <div class="col"> {{itm.time_from}} </div>
 
         <div class="col"> {{itm.time_to}} </div>
         <div class="col"> <button @click="deleteScheduleItem(itm.idScheduleItem)" class="btn btn-danger">X</button> </div>
-        </div>
+      </div>
 
   <div class="row">
     <EditNew :scheduleId="scheduleData.idSchedule" @saveNewItemOk="saveEdit"> </EditNew>
@@ -42,14 +42,14 @@ export default {
     }
   },
   methods: {
-    saveEdit(event) {
+    saveEdit(/*event*/) {
       this.loadScheduleDetails();
     },
     deleteScheduleItem(idNbr) {
 
         let req = axios.post(apiHost + '/rest/moderation/users/user_scheduleitem_delete.php' , {userId : this.$route.params.userId, idScheduleItem : idNbr});
         req.then( () => {
-          this.loadScheduleList();
+          this.loadScheduleDetails();
         })
     },
     loadScheduleDetails() {

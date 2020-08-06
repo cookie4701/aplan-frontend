@@ -96,7 +96,7 @@
             onBtnScheduleUser() {
               this.$router.push({
                 name : 'schedulesuser',
-                params : { id : this.userinfo.id }
+                params : { userId : this.userinfo.id }
               });
             },
             processData() {

@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="container-fluid">
+      <div class="row">
+        <NewSchedule @createNewOk="loadScheduleList"> </NewSchedule>
+      </div>
+
       <div class="row" >
-        <Entry v-for="lstitem in schedules" v-bind:key="lstitem.idSchedule" v-bind:itemdata="lstitem"> </Entry>
+        <Entry v-for="lstitem in schedules" v-bind:key="lstitem.idSchedule" v-bind:itemdata="lstitem" @deleteListEntryOk="loadScheduleList"> </Entry>
 
       </div>
 
@@ -19,12 +23,14 @@
 import axios from 'axios';
 import {apiHost} from "../config";
 import MonitorUserScheduleListEntry from './MonitorUserScheduleListEntry';
+import MonitorUserSchedulesListAddNew from './MonitorUserScheduleNew';
 
 import * as moment from 'moment';
 
 export default {
   components : {
-    'Entry' : MonitorUserScheduleListEntry
+    'Entry' : MonitorUserScheduleListEntry,
+    'NewSchedule' : MonitorUserSchedulesListAddNew
   },
 
   data : function() {

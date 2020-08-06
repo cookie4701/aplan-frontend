@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col"><select v-model="daySelected">
-        <option v-for="day in daynames" v-bind:value="day.value">
+        <option v-for="day in daynames" v-bind:value="day.value" v-bind:key="day.value">
           {{day.name}}
         </option>
        </select></div>
       <div class="col"><input v-model="from"></div>
       <div class="col"><input v-model="to"></div>
-      <div class="col"><button @click="btnSaveClick">Speichern</div>
+      <div class="col"><button @click="btnSaveClick">Speichern</button></div>
     </div>
   </div>
 
@@ -42,14 +42,15 @@ export default {
       if (! this.checkValues() ) return;
       let postData = {
         idSchedule : this.scheduleId,
-        from : this.from,
-        to : this.to,
-        day : this.daySelected
+        time_from : this.from,
+        time_to : this.to,
+        day : this.daySelected,
+        userId : this.$route.params.userId
       }
-      let req = axios.post(apiHost + '/rest/moderation/users/user_list_schedules.php', {userId : this.id});
+      let req = axios.post(apiHost + '/rest/moderation/users/user_scheduleitem_create.php', postData);
       req.then( () => {
         this.from = '';
-        this.to = ''.
+        this.to = '';
         this.day = 0;
         this.$emit('saveNewItemOk');
       })
@@ -74,8 +75,19 @@ export default {
         return false;
       }
 
-      if ( !Number.isInteger(temp[0]) || ! Number.isInteger(temp[1]) ) {
+      if ( !Number.isInteger( parseInt(temp[0],10) ) || ! Number.isInteger(parseInt(temp[1],10) ) ) {
         alert("Startzeit ist falsch!");
+        return false;
+      }
+
+      if ( parseInt(temp[0]) > 23 || parseInt(temp[0], 10) < 0 ) {
+        alert("Startzeit muss zwischen 0 und 23 Uhr liegen!")
+        return false;
+      }
+
+      if ( parseInt(temp[1]) > 59 || parseInt(temp[1], 10) < 0 ) {
+        alert("In der Startzeit müssen die Minuten zwischen 0 und 59 liegen!")
+        return false;
       }
 
       temp = this.to.split(":");
@@ -84,8 +96,19 @@ export default {
         return false;
       }
 
-      if ( !Number.isInteger(temp[0]) || ! Number.isInteger(temp[1]) ) {
+      if ( !Number.isInteger(parseInt(temp[0],10) ) || ! Number.isInteger(parseInt( temp[1],10 ) ) ) {
         alert("Endzeit ist falsch!");
+        return false;
+      }
+
+      if ( parseInt(temp[0]) > 23 || parseInt(temp[0], 10) < 0 ) {
+        alert("Endzeit muss zwischen 0 und 23 Uhr liegen!")
+        return false;
+      }
+
+      if ( parseInt(temp[1]) > 59 || parseInt(temp[1], 10) < 0 ) {
+        alert("In der Endzeit müssen die Minuten zwischen 0 und 59 liegen!")
+        return false;
       }
 
       return true;
