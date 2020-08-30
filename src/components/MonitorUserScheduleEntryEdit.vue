@@ -7,8 +7,12 @@
         <div class="col"> {{itm.time_from}} </div>
 
         <div class="col"> {{itm.time_to}} </div>
-        <div class="col"> <button @click="deleteScheduleItem(itm.idScheduleItem)" class="btn btn-danger">X</button> </div>
+        <div class="col"> <button @click="deleteScheduleItem(itm.idScheduleItem)" class="btn btn-danger m-1">X</button> </div>
       </div>
+
+  <div class="row">
+    <div class="col">Total geplante Arbeitszeit: {{totalWorktimePlanned}}</div>
+  </div>
 
   <div class="row">
     <EditNew :scheduleId="scheduleData.idSchedule" @saveNewItemOk="saveEdit"> </EditNew>
@@ -21,6 +25,7 @@
 import axios from 'axios';
 import {apiHost} from "../config";
 import MonitorUserScheduleListEntryNew from './MonitorUserScheduleListEntryNew';
+import {convertTimeStringToInteger, convertIntegerToTimeString} from "../helper";
 
 export default {
   components : {
@@ -80,7 +85,17 @@ export default {
     this.scheduleDetails = [];
     this.loadScheduleDetails();
   },
-  props : [ 'scheduleData']
+  props : [ 'scheduleData'],
+  computed : {
+    totalWorktimePlanned : function() {
+      let res = 0;
+      for ( let i = 0; i < this.scheduleDetails.length; i++) {
+        res += convertTimeStringToInteger( this.scheduleDetails[i].time_to );
+        res -= convertTimeStringToInteger( this.scheduleDetails[i].time_from );
+      }
+      return convertIntegerToTimeString(res);
+    }
+  }
 }
 </script>
 

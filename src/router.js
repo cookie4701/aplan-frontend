@@ -18,6 +18,7 @@ import MonitorPeriodCreate from "./components/MonitorPeriodCreate";
 import MonitorPeriodList from "./components/MonitorPeriodList";
 import MonitorPeriod from "./components/MonitorPeriod";
 import MonitorUserSchedulesList from "./components/MonitorUserSchedulesList";
+import MonitorUserHollidayPeriods from "./components/MonitorUserHollidayPeriods";
 
 
 Vue.use(Router)
@@ -152,7 +153,16 @@ let router = new Router({
       meta : {
         requiresAuth : true
       }
-    }
+    },
+      {
+        path : '/monitoring/hollidays/:userId',
+        name : 'hollidaysuser',
+        component : MonitorUserHollidayPeriods,
+        meta : {
+          requiresAuth : true
+        }
+      }
+    
 
 ]
 })

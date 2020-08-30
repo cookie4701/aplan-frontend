@@ -10,7 +10,7 @@
       <div class="col-sm-1">Tage </div>
       <div class="col-sm-1"><input v-model="newdays"></div>
       <div class="col-sm-1">Stunden (h:mm)</div>
-      
+
     </div>
 
     <div v-for="period in periods" v-bind:key="period.idVacation">
@@ -27,7 +27,7 @@
 
 export default {
   name : 'MonitorUserHollidayPeriods',
-  data : {
+  data : function() {
     return {
       periods : []
     }
