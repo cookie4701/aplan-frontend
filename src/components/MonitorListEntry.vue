@@ -8,6 +8,8 @@
             </div>
             <div class="col-sm" v-bind:style="{ background: activeColor }">
                 <button @click="onBtnScheduleUser" class="btn btn-secondary mt-1 ml-1">Stundenpläne anpassen</button>
+                <button @click="onBtnHollidaySetup" class="btn btn-secondary mt-1 ml-1">Urlaub festlegen</button>
+                <button @click="onBtnVacationSetup" class="btn btn-secondary mt-1 ml-1">Feiertage festlegen</button>
                 <button @click="onBtnDetailUser" class="btn btn-secondary mt-1 ml-1">Detail</button>
                 <button @click="onBtnTimeChange" class="btn btn-secondary mt-1 ml-1">Zeitanpassung</button>
                 <button @click="onBtnFreeze" class="btn btn-secondary mt-1 ml-1">Eingaben blockieren</button>
@@ -77,6 +79,12 @@
                 } else {
                     this.activeColor = 'lightblue';
                 }
+            },
+            onBtnHollidaySetup() {
+              this.$router.push({name : 'hollidaysuser', params : { userId : this.userinfo.id } });
+            },
+            onBtnVacationSetup() {
+
             },
             onBtnTimeChange() {
                 this.$router.push({name : 'timemodification', params : { id : this.userinfo.id } });
