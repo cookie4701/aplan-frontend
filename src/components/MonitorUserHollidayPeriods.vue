@@ -93,6 +93,11 @@ export default {
         this.msg = err;
       })
     },
+    saveNewDataset() {
+      let data : {
+        
+      }
+    }
   },
   mounted : function() {
     this.onLoad();
