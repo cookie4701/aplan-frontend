@@ -33,10 +33,7 @@
     import axios from 'axios';
     import {apiHost} from "../config";
     import * as moment from 'moment';
-    //import MonitorUserList from "MonitorUserList";
-
-    //import {minutesToTime} from "../helper";
-
+    
     export default {
       name : 'MonitorUserTimeModification',
       data: function() {
