@@ -84,7 +84,7 @@
               this.$router.push({name : 'hollidaysuser', params : { userId : this.userinfo.id } });
             },
             onBtnVacationSetup() {
-
+              this.$router.push({name : 'vacationuser', params : { userId : this.userinfo.id } });
             },
             onBtnTimeChange() {
                 this.$router.push({name : 'timemodification', params : { id : this.userinfo.id } });
