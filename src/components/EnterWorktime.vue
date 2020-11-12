@@ -54,27 +54,35 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-4"> </div>
-        <div class="col-sm-4">Urlaub ({{hollidayPeriod}})</div>
-        <div class="col-sm-4">Feiertage ({{vacationPeriod}})</div>
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-2">Urlaubstage ({{hollidayPeriod}})</div>
+        <div class="col-sm-2">Urlaubsstunden ({{hollidayPeriod}}) </div>
+        <div class="col-sm-2">Feiertage ({{vacationPeriod}})</div>
+        <div class="col-sm-2">Feiertagsstunden ({{vacationPeriod}})</div>
       </div>
 
       <div class="row">
-        <div class="col-sm-4">Vor der Woche</div>
-        <div class="col-sm-4">{{hollidaysRemainBeforeWeek}}</div>
-        <div class="col-sm-4">{{vacationDaysRemainBeforeWeek}}</div>
+        <div class="col-sm-1">Vor der Woche</div>
+        <div class="col-sm-2">{{hollidaysRemainBeforeWeek}}</div>
+        <div class="col-sm-2">{{hollidayTimeRemainBeforeWeekString}}</div>
+        <div class="col-sm-2">{{vacationDaysRemainBeforeWeek}}</div>
+        <div class="col-sm-2">{{vacationTimeRemainBeforeWeekString}}</div>
       </div>
 
       <div class="row">
-        <div class="col-sm-4">Diese Woche genommen</div>
-        <div class="col-sm-4">{{hollidaysTakenThisWeek}} </div>
-        <div class="col-sm-4">{{vacationDaysTakenThisWeek}} </div>
+        <div class="col-sm-1">Diese Woche genommen</div>
+        <div class="col-sm-2">{{hollidaysTakenThisWeek}} </div>
+        <div class="col-sm-2">{{hollidayTimeTakenThisWeekString}}</div>
+        <div class="col-sm-2">{{vacationDaysTakenThisWeek}} </div>
+        <div class="col-sm-2">{{vacationTimeTakenThisWeekString}}</div>
       </div>
 
       <div class="row">
-        <div class="col-sm-4">Neuer Stand</div>
-        <div class="col-sm-4">{{hollidaysRemainThisWeek}} </div>
-        <div class="col-sm-4">{{vacationDaysRemainThisWeek}} </div>
+        <div class="col-sm-1">Neuer Stand</div>
+        <div class="col-sm-2">{{hollidaysRemainThisWeek}} </div>
+        <div class="col-sm-2">{{resultTimeHolliday}}</div>
+        <div class="col-sm-2">{{vacationDaysRemainThisWeek}} </div>
+        <div class="col-sm-2">{{resultTimeVacation}}</div>
       </div>
 
 
@@ -105,10 +113,13 @@ export default {
       startDate : calcMonday,
       workTime : '00:00',
       hollidaysRemainBeforeWeek : 0,
+      hollidayTimeRemainBeforeWeek : 0,
+      hollidayTimeRemainBeforeWeekString : '00:00',
       hollidaysTakenThisWeek : 0,
       hollidaysRemainThisWeek : 0,
       hollidayPeriod : '',
       vacationDaysRemainBeforeWeek : 0,
+      vacationTimeRemainBeforeWeek : 0,
       vacationDaysTakenThisWeek : 0,
       vacationDaysRemainThisWeek : 0,
       vacationPeriod : '',
@@ -116,7 +127,11 @@ export default {
       workResultNew : '00:00',
       timeAccountBefore : '00:00',
       bonusTime : '00:00',
-      bonusTimeVal : 0
+      bonusTimeVal : 0,
+      hollidayTimeTakenThisWeek : 0,
+      hollidayTimeTakenThisWeekString : '',
+      vacationTimeTakenThisWeek : 0,
+      vacationTimeTakenThisWeekString : ''
     }
   },
   components: {EnterWorkday},
@@ -217,6 +232,7 @@ export default {
 
     },
     recalc: function() {
+      this.hollidayTimeRemainBeforeWeekFx();
       this.bonusTimeFx();
       this.hollidayPeriodFx();
       this.vacationPeriodFx();
@@ -227,7 +243,29 @@ export default {
       this.timeAccountBeforeFx();
       this.calcWorkDone();
       this.calcNewResult();
+      this.calcOffTime();
 
+    },
+
+    vacationTimeRemainBeforeWeekFx() {
+      if (this.week === undefined) {
+        return 0;
+      }
+
+      this.vacationTimeRemainBeforeWeek =
+        this.week[0].remainVacationTimeBeforeDate;
+
+      this.vacationTimeRemainBeforeWeekString = minutesToTime(this.vacationTimeRemainBeforeWeek);
+    },
+    hollidayTimeRemainBeforeWeekFx() {
+      if (this.week === undefined) {
+        return 0;
+      }
+
+      this.hollidayTimeRemainBeforeWeek =
+        this.week[0].remainHollidayTimeBeforeDate;
+
+      this.hollidayTimeRemainBeforeWeekString = minutesToTime(this.hollidayTimeRemainBeforeWeek);
     },
 
     processMessage(event) {
@@ -238,7 +276,7 @@ export default {
 
     },
     hollidaysRemainBeforeWeekFx: function() {
-      if (this.week == undefined) {
+      if (this.week === undefined) {
         return 0;
       }
 
@@ -272,6 +310,41 @@ export default {
 
       this.vacationDaysRemainBeforeWeek = this.week[0].remainVavationBeforeDate;
     },
+
+    calcOffTime: function() {
+      this.hollidayTimeTakenThisWeek = 0;
+      this.vacationTimeTakenThisWeek = 0;
+
+      for (let i=0; i < this.week.length; i++) {
+        // holliday
+        if (this.week[i].hollidayStatus.hollidayId == 6) {
+          let dayTime = 0;
+          for (let k = 0; k < this.week[i].schedule.length; k++) {
+            dayTime += timeToMinutes( this.week[i].schedule[k].timeTo );
+            dayTime -= timeToMinutes( this.week[i].schedule[k].timeFrom );
+          }
+          this.hollidayTimeTakenThisWeek += dayTime;
+        }
+        // vacation
+        if (this.week[i].hollidayStatus.hollidayId == 7) {
+          let dayTime = 0;
+          for (let k = 0; k < this.week[i].schedule.length; k++) {
+            dayTime += timeToMinutes( this.week[i].schedule[k].timeTo );
+            dayTime -= timeToMinutes( this.week[i].schedule[k].timeFrom );
+          }
+          this.vacationTimeTakenThisWeek += dayTime;
+        }
+      }
+
+      this.hollidayTimeTakenThisWeekString = minutesToTime(
+        this.hollidayTimeTakenThisWeek
+      );
+
+      this.vacationTimeTakenThisWeekString = minutesToTime(
+        this.vacationTimeTakenThisWeek
+      );
+    },
+
 
     calcOffDays: function() {
       this.hollidaysTakenThisWeek = 0;
@@ -356,6 +429,16 @@ export default {
     }),
     message : function() {
       return this.messages.join(' / ');
+    },
+
+    resultTimeHolliday: function() {
+      let t = this.hollidayTimeRemainBeforeWeek - this.hollidayTimeTakenThisWeek;
+      return minutesToTime(t);
+    },
+
+    resultTimeVacation: function() {
+      let t = this.vacationTimeRemainBeforeWeek - this.vacationTimeTakenThisWeek;
+      return minutesToTime(t);
     },
 
     totalTime: function() {

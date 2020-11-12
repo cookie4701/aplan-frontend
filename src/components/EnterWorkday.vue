@@ -10,10 +10,13 @@
                 <label for="dayStatus">Status</label>
                 <select id="dayStatus" v-model="workdaydata.hollidayStatus.hollidayId" @change="saveOnLeaveInputAndInformParent" :disabled="workdaydata.inputblocked">
                     <option value="1">Normaler Arbeitstag</option>
-                    <option value="2">Urlaub</option>
-                    <option value="3">Feiertag</option>
+                    <option value="2">Urlaub (Ganzer Tag)</option>
+                    <option value="6">Urlaub (Stunden) </option>
+                    <option value="3">Feiertag (Ganzertag)</option>
+                    <option value="7">Feiertag (Stunden) </option>
                     <option value="4">Krankheit</option>
                     <option value="5">Sonstiges</option>
+
                 </select>
             </div>
             <div class="fromto">
@@ -33,6 +36,7 @@
                 <li v-for="itm in workdaydata.bonus" v-bind:key="itm.id" >{{itm.description}} {{itm.minutes}} Minuten</li>
               </ul>
             </div>
+
             </div>
 
             <div class="col-sm">

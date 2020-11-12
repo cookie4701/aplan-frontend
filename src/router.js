@@ -155,25 +155,23 @@ let router = new Router({
         requiresAuth : true
       }
     },
-      {
-        path : '/monitoring/hollidays/:userId',
-        name : 'hollidaysuser',
-        component : MonitorUserHollidayPeriods,
-        meta : {
-          requiresAuth : true
-        }
-      },
-      {
-        path : '/monitoring/vacation/:userId',
-        name : 'vacationuser',
-        component : MonitorUserVacationPeriods,
-        meta : {
-          requiresAuth : true
-        }
+    {
+      path : '/monitoring/hollidays/:userId',
+      name : 'hollidaysuser',
+      component : MonitorUserHollidayPeriods,
+      meta : {
+        requiresAuth : true
       }
-
-
-]
+    },
+    {
+      path : '/monitoring/vacation/:userId',
+      name : 'vacationuser',
+      component : MonitorUserVacationPeriods,
+      meta : {
+        requiresAuth : true
+      }
+    }
+  ]
 })
 
 router.beforeEach((to, from, next) => {

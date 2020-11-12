@@ -3,7 +3,7 @@
 
     <div class="container-fluid">
 
-      <h3>Urlaub</h3>
+      <h3>Feiertage</h3>
 
       <div class="row border border-danger" v-if="msg != ''">
         {{msg}}
@@ -40,12 +40,12 @@
           <div class="col"></div>
         </div>
 
-        <div v-for="period in periods" v-bind:key="period.idHolliday" class="row myhover mb-2">
+        <div v-for="period in periods" v-bind:key="period.idVacation" class="row myhover mb-2">
           <div class="col">{{period.startdate}}</div>
           <div class="col">{{period.enddate}}</div>
           <div class="col">{{period.nbrdays}}</div>
           <div class="col">{{period.nbrminutes}}</div>
-          <div class="col"><button class="btn btn-danger" @click="deleteDataset(period.idHolliday)">x</button></div>
+          <div class="col"><button class="btn btn-danger" @click="deleteDataset(period.idVacation)">x</button></div>
         </div>
 
 
@@ -81,7 +81,7 @@ export default {
       this.loadListFromServer();
     },
     loadListFromServer() {
-      let req = axios.post(apiHost + '/rest/moderation/holliday/read.php', {userId : this.id});
+      let req = axios.post(apiHost + '/rest/moderation/vacation/read.php', {userId : this.id});
       req.then( response => response.data)
       .then( data => {
         this.periods.splice(0, this.periods.length);
@@ -108,11 +108,11 @@ export default {
     },
     deleteDataset(id) {
       let data =  {
-        hollidayid : id,
+        idVacation : id,
         userid : this.$route.params.userId
       };
 
-      let req = axios.post(apiHost + '/rest/moderation/holliday/delete.php', data);
+      let req = axios.post(apiHost + '/rest/moderation/vacation/delete.php', data);
       req.then( () => {
         this.msg = "Dataset deleted";
       })
@@ -135,7 +135,7 @@ export default {
         userid : this.$route.params.userId
       };
 
-      let req = axios.post(apiHost + '/rest/moderation/holliday/create.php', data);
+      let req = axios.post(apiHost + '/rest/moderation/vacation/create.php', data);
 
       req.then( () => {
         this.msg = "Speichern Ok!";
