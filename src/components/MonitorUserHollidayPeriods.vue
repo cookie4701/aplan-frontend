@@ -60,6 +60,7 @@
 import axios from 'axios';
 import {apiHost} from "../config";
 import * as moment from 'moment';
+import {convertTimeStringToInteger, convertIntegerToTimeString} from "../helper";
 
 export default {
   name : 'MonitorUserHollidayPeriods',
@@ -88,22 +89,17 @@ export default {
         for (let i=0; i < data.length; i++ ) {
           data[i].startdate = moment(data[i].startdate, "YYYY-MM-DD").format("DD.MM.YYYY");
           data[i].enddate = moment(data[i].enddate, "YYYY-MM-DD").format("DD.MM.YYYY");
+					data[i].nbrminutes = convertIntegerToTimeString(data[i].nbrminutes);
           this.periods.push( data[i] );
         }
+				this.newtime = convertIntegerToTimeString(this.newtime);
       })
       .catch( (err) => {
         this.msg = err;
       })
     },
     reformatTimeField() {
-      const t = this.newtime.split(":");
-
-      if ( t.length == 2 ) {
-        const h = 60 * parseInt( t[0], 10 );
-        const m = parseInt(t[1], 10);
-        const res = h+m;
-        this.newtime = res;
-      }
+			this.newtime = convertTimeStringToInteger(this.newtime);
 
     },
     deleteDataset(id) {
