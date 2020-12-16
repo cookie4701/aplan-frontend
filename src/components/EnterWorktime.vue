@@ -131,7 +131,8 @@ export default {
       hollidayTimeTakenThisWeek : 0,
       hollidayTimeTakenThisWeekString : '',
       vacationTimeTakenThisWeek : 0,
-      vacationTimeTakenThisWeekString : ''
+			vacationTimeTakenThisWeekString : '',
+			vacationTimeRemainBeforeWeekString : ''
     }
   },
   components: {EnterWorkday},
@@ -238,6 +239,7 @@ export default {
       this.vacationPeriodFx();
       this.hollidaysRemainBeforeWeekFx();
       this.vacationDaysRemainBeforeWeekFx();
+			this.vacationTimeRemainBeforeWeekFx();
       this.calcOffDays();
       this.calcWorkToDo();
       this.timeAccountBeforeFx();
