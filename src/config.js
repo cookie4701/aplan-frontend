@@ -1,4 +1,4 @@
-let baseURL = 'https://remote2.jugendbuero.be/backend';
+let baseURL = 'https://remote3.jugendbuero.be/arbeitsplan';
 let orgacode = 'jbuero2020';
 
 export const apiHost = baseURL;

@@ -5,7 +5,8 @@ export default {
     state: {
         status: '',
         token: localStorage.getItem('user-token') || '',
-        user: {}
+        user: {},
+	moderator : false,
     },
     getters: {
         isLoggedIn: state => !!state.token,
@@ -20,11 +21,11 @@ export default {
             state.status = 'loading'
         },
 
-        auth_success(state, token, user, moderator) {
+        auth_success(state, payload) {
             state.status = 'success'
-            state.token = token
-            state.user = user
-            state.moderator = moderator
+            state.token = payload.token
+            state.user = payload.user
+            state.moderator = payload.moderator
         },
         auth_error(state) {
             state.status = 'error'
@@ -41,12 +42,13 @@ export default {
                 commit('auth_request')
                 axios({url: apiHost + '/rest/auth/login.php', data: user, method: 'POST'})
                     .then(resp => {
-                        const token = resp.data.token
-                        const user = resp.data.user
-			const moderator = resp.data.isModerator
-                        localStorage.setItem('user-token', token)
-                        axios.defaults.headers.common['Authorization'] = token
-                        commit('auth_success', token, user, moderator)
+			const payload = [];
+			payload.token = resp.data.token
+                        payload.user = resp.data.user
+			payload.moderator = resp.data.isModerator
+                        localStorage.setItem('user-token', resp.data.token)
+                        axios.defaults.headers.common['Authorization'] = resp.data.token
+                        commit('auth_success', payload)
                         resolve(resp)
                     })
                     .catch(err => {
