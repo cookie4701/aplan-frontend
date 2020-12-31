@@ -79,7 +79,6 @@ export default {
       this.totalCapital = moment.duration('00:00', "HH:mm");
       var req = axios.post(apiHost + '/rest/selfstat/read.php', eventdata);
       req.then( response => response.data )
-      //.then( data => data.workareas)
       .then( (data) => {
         this.statistics.splice(0, this.statistics.length);
         return data;

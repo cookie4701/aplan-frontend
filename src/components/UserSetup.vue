@@ -255,15 +255,13 @@
 
                 await this.$store.dispatch('workareasFetch');
             },
-            // drive recompensation
             async createDriveCompensation() {
                 try {
                     await this.$store.dispatch('insertDriveCompensation', this.driveCompensationNew);
                     await this.refreshView();
-                } catch (e) {
-                    // eslint-disable-next-line no-console
-                    console.log(e);
-                }
+								} catch  {
+									/* console.log(e); */
+								} 
 
             },
 

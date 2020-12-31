@@ -28,12 +28,10 @@
     import axios from 'axios';
     import {apiHost} from "../config";
 
-    //import MonitorListEntryDay from "./MonitorListEntryDay";
     import {minutesToTime} from "../helper";
 
     export default {
         name: "MonitorListEntry",
-        //components: {MonitorListEntryDay},
         props: ['userinfo', 'rowNumber', 'numberDays'],
         data: function () {
             return {
@@ -145,7 +143,6 @@
                     .catch( () => {
                         this.hasError = true;
                         this.loading = false;
-                        // eslint-disable-next-line no-console
                         console.log('ooops');
                     })
             }

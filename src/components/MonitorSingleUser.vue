@@ -135,9 +135,7 @@
             this.enddate = this.momentEnddate.format("DD.MM.YYYY").toString();
           },
           changeDateStart() {
-            // check if date is entered correctly
             if ( ! moment(this.startdate, "DD.MM.YYYY").isValid() ) {
-              // message error
               this.resetStartDate();
               this.backgrounds.startdate = '#ff0000';
               setTimeout(this.applyWhitebackground,5000);
@@ -189,7 +187,6 @@
             });
           },
           debugMessage(str) {
-            // eslint-disable-next-line no-console
             console.log(str);
           }
         },

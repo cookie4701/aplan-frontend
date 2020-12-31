@@ -42,7 +42,8 @@ export default {
       username : "",
       password : ""
     }
-  },
+	},
+	name : 'login',
 
   methods : {
     login: function() {
@@ -51,7 +52,7 @@ export default {
       this.$store.dispatch('login', {username, password})
       .then ( () => this.$router.push('/'))
       .catch( () => {
-        //console.log(err);
+				/* console.log(err); */
       });
     }
   }

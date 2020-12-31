@@ -318,7 +318,7 @@ export default {
       this.vacationTimeTakenThisWeek = 0;
 
       for (let i=0; i < this.week.length; i++) {
-        // holliday
+				/* holliday */
         if (this.week[i].hollidayStatus.hollidayId == 6) {
           let dayTime = 0;
           for (let k = 0; k < this.week[i].schedule.length; k++) {
@@ -327,7 +327,7 @@ export default {
           }
           this.hollidayTimeTakenThisWeek += dayTime;
         }
-        // vacation
+				/* vacation */
         if (this.week[i].hollidayStatus.hollidayId == 7) {
           let dayTime = 0;
           for (let k = 0; k < this.week[i].schedule.length; k++) {

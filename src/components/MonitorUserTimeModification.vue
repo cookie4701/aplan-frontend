@@ -59,12 +59,9 @@
           return refThis.loadUserinfo();
         } )
         .catch(err => {
-          // eslint-disable-next-line no-console
           console.log(err);
         });
 
-        //this.referenceDate = moment().format("DD.MM.YYYY").toString()
-        //this.referenceDate = 'xxx';
 
       },
       methods : {
@@ -95,7 +92,6 @@
               refThis.userinfo.dname = data.displayname;
             })
             .catch( (err) => {
-              // eslint-disable-next-line no-console
               console.log(err);
             });
 

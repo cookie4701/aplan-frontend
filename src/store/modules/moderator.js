@@ -9,7 +9,6 @@ export default {
     },
     getters: {
         isLoggedIn: state => !!state.token,
-	isModerator: state => state.moderator,
         authStatus: state => state.status
     },
     setters : {
@@ -20,11 +19,10 @@ export default {
             state.status = 'loading'
         },
 
-        auth_success(state, token, user, moderator) {
+        auth_success(state, token, user) {
             state.status = 'success'
             state.token = token
             state.user = user
-            state.moderator = moderator
         },
         auth_error(state) {
             state.status = 'error'
@@ -32,7 +30,6 @@ export default {
         logout(state) {
             state.status = ''
             state.token = ''
-            state.moderator = false
         }
     },
     actions : {
@@ -43,10 +40,9 @@ export default {
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
-			const moderator = resp.data.isModerator
                         localStorage.setItem('user-token', token)
                         axios.defaults.headers.common['Authorization'] = token
-                        commit('auth_success', token, user, moderator)
+                        commit('auth_success', token, user)
                         resolve(resp)
                     })
                     .catch(err => {

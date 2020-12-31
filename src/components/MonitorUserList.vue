@@ -71,7 +71,6 @@
 
             },
             changeSelect() {
-              //this.messages = '';
               var refThis = this;
               var prom = new Promise( function(resolve) {
                 if ( refThis.userdata.length > 0 ) {
@@ -97,7 +96,6 @@
                 this.messages += 'compInit not true';
                 return;
               }
-                // retrieve something
                 let url = '/rest/moderation/users/list.php?orgacode=jbuero2020&page=' + this.pagenumber
                   + '&nbritems=' + this.nbruser;
                 axios.get( apiHost + url)
@@ -164,7 +162,6 @@
         },
 
         watch:{
-    //$route (to, from){
     $route: function() {
         this.fxMounted();
     }

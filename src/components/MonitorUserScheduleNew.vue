@@ -59,7 +59,6 @@ export default {
         userId : this.$route.params.userId
       };
 
-      //axios post
       let req = axios.post(apiHost + '/rest/moderation/users/user_create_schedule.php', postData);
       req.then( () => {
         this.$emit('createNewOk');
@@ -88,7 +87,6 @@ export default {
         }
       }
     },
-    //computed : {},
     name : 'MonitorUserSchedulesListAddNew'
   }
   </script>

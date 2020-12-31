@@ -8,7 +8,7 @@
       <b-button v-if="isLoggedIn" to="/selfstat" class="col m-md-2" variant="primary">Statistik</b-button>
       <b-button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2" variant="primary">Fahrten</b-button>
 
-      <b-dropdown id="dropdownmoderation" text="Moderation" class="m-md-2 col btn btn-secondary" v-if="isLoggedIn">
+      <b-dropdown id="dropdownmoderation" text="Moderation" class="m-md-2 col btn btn-secondary" v-if="isLoggedIn && isModerator">
         <b-dropdown-item>
           <router-link :to="{ name: 'monitoruserlist'}">Nutzer moderieren</router-link>
         </b-dropdown-item>
@@ -42,7 +42,8 @@
 export default {
   name: 'app',
   computed : {
-    isLoggedIn : function() {return this.$store.getters.isLoggedIn}
+		isLoggedIn : function() {return this.$store.getters.isLoggedIn},
+		isModerator : function() { return this.$store.getters.isModerator}
   },
   data : function() {
     return {

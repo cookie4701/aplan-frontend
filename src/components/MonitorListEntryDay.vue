@@ -67,7 +67,6 @@
         },
         methods : {
             popup() {
-              //this.$emit('message', 'boo');
               this.popupWorkfields = true;
               setTimeout(() => {
                 this.popupWorkfields = false;

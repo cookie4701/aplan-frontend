@@ -35,7 +35,6 @@ export default {
       message : ''
     };
   },
-  //methods : {},
   mounted() {
     var req = this.$store.dispatch('fetchUserPeriods', this.uid);
     req.then( () => {
