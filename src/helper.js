@@ -41,7 +41,11 @@ export function convertTimeStringToInteger(timevalString) {
 
     let timeResult = 0;
     timeResult += parseInt( arrTime[0] , 10) * 60;
-    timeResult += parseInt( arrTime[1] ,10 );
+	if (timeResult < 0 ) {
+		timeResult -= parseInt( arrTime[1] ,10 );
+	} else {
+		timeResult += parseInt( arrTime[1] ,10 );
+	}
 
     return timeResult;
 }
