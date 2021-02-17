@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function rearrangeDateBeToDb(datevar) {
     let arrDate = datevar.split(".");
     if (arrDate.length != 3) {
@@ -198,4 +200,15 @@ export function minutesToTime(minutes) {
         }
     }
 
+}
+
+export function getDaynameFromDate(pDate) {
+	var dayNbr = parseInt( moment(pDate, 'DD.MM.YYYY').format('d') , 10);
+	if ( dayNbr === 0 ) {
+		dayNbr = 6;
+	} else {
+		dayNbr--;
+	}
+
+	return getStringDayOfWeek(dayNbr);	
 }

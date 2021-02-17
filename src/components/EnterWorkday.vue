@@ -4,7 +4,7 @@
             <div class="col-sm">
             <div class="displayDate">
                 <h3>Datum</h3>
-                {{workdaydata.dateOfDay}}
+                {{nameWeekday}} - {{workdaydata.dateOfDay}}
             </div>
             <div class="dayStatus">
                 <label for="dayStatus">Status</label>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-    import {timeToMinutes, minutesToTime} from "../helper";
+    import {timeToMinutes, minutesToTime, getDaynameFromDate} from "../helper";
 
     export default {
         name: "EnterWorkday",
@@ -185,6 +185,15 @@
                 deep: true
             }
         },
+	computed : {
+		nameWeekday : function() {
+			if (this.workdaydata.dateOfDay !== undefined ) {
+				return getDaynameFromDate(this.workdaydata.dateOfDay);
+			} else {
+				return '';
+			}
+		}
+	},
         mounted() {
             this.validateWorktimes();
         }
