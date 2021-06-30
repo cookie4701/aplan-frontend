@@ -143,7 +143,10 @@
                     .catch( () => {
                         this.hasError = true;
                         this.loading = false;
-                        console.log('ooops');
+
+                        publicPath: process.env.NODE_ENV === 'production'
+                        ? ''
+                        : console.log('Es gab ein Problem!');
                     })
             }
 
