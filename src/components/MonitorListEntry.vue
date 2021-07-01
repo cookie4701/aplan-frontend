@@ -144,9 +144,7 @@
                         this.hasError = true;
                         this.loading = false;
 
-                        publicPath: process.env.NODE_ENV === 'production'
-                        ? ''
-                        : console.log('Es gab ein Problem!');
+                        //console.log('Es gab ein Problem!');
                     })
             }
 
