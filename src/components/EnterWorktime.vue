@@ -407,8 +407,10 @@ export default {
     },
     timeAccountBeforeFx: function() {
       if ( this.week === undefined) return '00:00';
-
       this.timeAccountBefore = convertIntegerToTimeString(this.week[0].timeAccount);
+      
+
+      
     },
     bonusTimeFx: function() {
       let bonus = 0;

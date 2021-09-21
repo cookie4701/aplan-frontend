@@ -161,6 +161,10 @@ export function getStringDayOfWeek(nbr) {
 }
 
 export function timeToMinutes(timeval) {
+    let prefix = '';
+
+    if (timeval.startsWith('-') ) prefix = '-';
+
     let arr = timeval.split(':');
 
     if ( arr.length != 2 ) return 0;
@@ -172,6 +176,7 @@ export function timeToMinutes(timeval) {
         minutes -= parseInt(arr[1], 10);
     }
 
+    if ( prefix === '-' && minutes >= 0 ) minutes *= -1.0;
 
     return minutes;
 }
