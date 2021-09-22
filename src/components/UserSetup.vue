@@ -259,9 +259,9 @@
                 try {
                     await this.$store.dispatch('insertDriveCompensation', this.driveCompensationNew);
                     await this.refreshView();
-								} catch  {
-									/* console.log(e); */
-								} 
+				} catch (e){
+					console.log(e)
+				} 
 
             },
 

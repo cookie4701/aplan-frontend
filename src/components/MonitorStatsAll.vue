@@ -26,7 +26,7 @@
 
 export default {
     name : 'MonitorStatsAll',
-    data : {
+    data : function() {
         return {
             'var' : 'val',
             'userdata' : []
