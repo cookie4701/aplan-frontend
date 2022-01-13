@@ -18,6 +18,10 @@
                     <option value="5">Sonstiges</option>
 
                 </select>
+		<div v-if="workdaydata.hollidayStatus.hollidayId == 6 || workdaydata.hollidayStatus.hollidayId == 7">
+		<label for="hoursTaken">Zeit genommen (H:MM)</label>
+		<input id="hoursTaken" type="text" class="shortinput" :disabled="workdaydata.inputblocked" v-model="workdaydata.hoursTaken" @blur="saveOnLeaveInputAndInformParent">
+		</div>
             </div>
             <div class="fromto">
                 <h3>Uhrzeiten</h3>
@@ -90,7 +94,8 @@
                 inputStyle : {
 
                 },
-                remainingTime : ''
+                remainingTime : '',
+
             }
         },
         props: ['workdaydata'],
@@ -131,7 +136,8 @@
                 const payload = {
                     id : this.workdaydata.id,
                     worktime : this.workdaydata.worktime,
-                    holliday : this.workdaydata.hollidayStatus.hollidayId
+                    holliday : this.workdaydata.hollidayStatus.hollidayId,
+		    hoursTaken : this.workdaydata.hoursTaken
                 };
 
                 this.$emit('onUpdateTimes', payload);
@@ -202,10 +208,6 @@
 
 <style scoped>
 .customWidth {
-    /*
-    width: calc(50% - 2em);
-
-     */
 }
     .description-workarea {
         width: 14ch;
