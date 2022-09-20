@@ -1,4 +1,4 @@
-# aplan-node
+# aplan-frontend
 
 ## Project setup
 ```
