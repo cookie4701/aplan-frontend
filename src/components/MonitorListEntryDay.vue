@@ -70,7 +70,7 @@
               this.popupWorkfields = true;
               setTimeout(() => {
                 this.popupWorkfields = false;
-              }, 5000);
+              }, 15000);
             },
             resetPopup() {
               this.popupWorkfields = false;

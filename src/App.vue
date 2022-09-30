@@ -2,33 +2,25 @@
 
   <div id="app" class="container-fluid">
     <div class="row d-print-none">
-      <b-button v-if="isLoggedIn" to="/" class="col m-md-2" variant="primary">Home</b-button>
-      <b-button v-if="isLoggedIn" to="/worktimeinput" class="col m-md-2" variant="primary">Erledigte Arbeit eintragen</b-button>
-      <b-button v-if="isLoggedIn" to="/userinfo" class="col m-md-2" variant="primary">Benutzerinformationen anpassen</b-button>
-      <b-button v-if="isLoggedIn" to="/selfstat" class="col m-md-2" variant="primary">Statistik</b-button>
-      <b-button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2" variant="primary">Fahrten</b-button>
+      <button @click='go_home' v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Home</button>
+      <button @click="enter_worktime"  v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Erledigte Arbeit eintragen</button>
+      <button @click="enter_userinfo" v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Benutzerinformationen anpassen</button>
+      <button v-if="isLoggedIn" to="/selfstat" class="col m-md-2 btn btn-primary" variant="primary">Statistik</button>
+      <button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2" variant="primary">Fahrten</button>
 
-      <b-dropdown id="dropdownmoderation" text="Moderation" class="m-md-2 col btn btn-secondary" v-if="isModerator">
-        <b-dropdown-item>
-          <router-link :to="{ name: 'monitoruserlist'}">Nutzer moderieren</router-link>
-        </b-dropdown-item>
+      <button id="dropdownmoderation" data-bs-target='#monitor_target' data-bs-toggle="collapse" class="m-md-2 col btn btn-primary" v-if="isModerator">Moderation</button>
 
-        <b-dropdown-item>
-          <router-link :to="{ name: 'monitorperiodcreate'}">Allgemeinen Arbeitszeitraum festlegen</router-link>
-        </b-dropdown-item>
+<div id='monitor_target'>
+	<button @click='' class="btn btn-secondary">Nutzer moderieren</button>
+	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume festlegen</button>
+	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume anzeigen</button>
+	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume</button>
 
-        <b-dropdown-item>
-          <router-link :to="{ name: 'monitorperiodlist'}">Allgemeine Arbeitszeiträume anzeigen</router-link>
-        </b-dropdown-item>
+</div>
 
-        <b-dropdown-item>
-          <router-link :to="{ name: 'monitorperiod'}">Allgemeine Arbeitszeiträume</router-link>
-        </b-dropdown-item>
-
-      </b-dropdown>
-
-      <b-button v-if="isLoggedIn" @click="logout" class="col m-md-2">Logout</b-button>
-      <b-button v-if="!isLoggedIn" class="btn btn-light col m-md-2" to="login">Login</b-button>
+      <button v-if="isLoggedIn" @click="logout" class="col m-md-2">Logout</button>
+	<button v-if="!isLoggedIn" @click="login_do" class="btn btn-primary">Login</button>
+ 
     </div>
 
     <div class="row">
@@ -57,7 +49,21 @@ export default {
       .then( () => {
         this.$router.push('/login')
       })
-    }
+    },
+
+	login_do() {
+		this.$router.push('/login');
+	},
+	enter_worktime() {
+		console.log('executing enter_worktime');
+		this.$router.push('/worktimeinput');
+	},
+	enter_userinfo() {
+		this.$router.push('/userinfo');
+	},
+	go_home() {
+		this.$router.push('home');
+	},
   },
   components: {
 
@@ -65,6 +71,7 @@ export default {
 
   created : function() {
     document.title = 'Timesheet';
+	/*
     this.$http.interceptors.response.use(undefined, function (err) {
       return new Promise(function () {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
@@ -73,6 +80,7 @@ export default {
         throw err;
       });
     });
+	*/
   }
 }
 </script>

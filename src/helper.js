@@ -1,4 +1,16 @@
-import moment from 'moment'
+import moment from 'moment';
+import axios from 'axios';
+
+export function jwtInterceptor() {
+	axios.interceptors.request.use(request => {
+		const token = localStorage.getItem('user-token') || '' ;
+		if ( token !== '' ) {
+			request.headers.common.Authorization = `${token}`;
+		}
+		return request;
+	});
+}
+
 
 export function rearrangeDateBeToDb(datevar) {
     let arrDate = datevar.split(".");
@@ -216,4 +228,21 @@ export function getDaynameFromDate(pDate) {
 	}
 
 	return getStringDayOfWeek(dayNbr);	
+}
+
+export async function postData(url = '', data = {}) {
+	const response = await fetch(url, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		redirect : 'follow',
+		referrerPolicy: 'no-referrer',
+		body: JSON.stringify(data)
+	});
+
+	return response.json();
 }

@@ -147,8 +147,7 @@ export default {
 
                         response['dateOfDay'] = reaarrangeDateDbToBe(response['dateOfDay']);
 
-                        commit('fetchWeekDataInProgress', {day : x, data : response});
-                        return "ok";
+                        return commit('fetchWeekDataInProgress', {day : x, data : response});
                     })
                     .catch( (err) => {
                         // eslint-disable-next-line no-console

@@ -1,27 +1,21 @@
-import Vue from 'vue';
+import {createApp} from 'vue'
+
 import App from './App.vue';
 import router from './router';
 import store from './store/store';
 
-import { LinkPlugin, ButtonPlugin, BootstrapVue, DropdownPlugin} from 'bootstrap-vue'
+import { jwtInterceptor } from './helper';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
-const token = localStorage.getItem('user-token');
+import EnterWorkday from './components/EnterWorkday.vue';
 
-if (token) {
-        Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
-}
 
-Vue.config.productionTip = false;
-Vue.use(DropdownPlugin);
-Vue.use(ButtonPlugin);
-Vue.use(LinkPlugin);
+jwtInterceptor();
 
-new Vue({
-        router,
-        store,
-        BootstrapVue,
-        render: h => h(App),
-}).$mount('#app')
+const app = createApp(App);
+app.use(store);
+app.use(router);
+
+const rootComponent = app.mount('#app');

@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import store from './store/store.js'
 import Home from './views/Home.vue'
 import Login from './components/Login.vue'
@@ -22,9 +22,8 @@ import MonitorUserHollidayPeriods from "./components/MonitorUserHollidayPeriods"
 import MonitorUserVacationPeriods from "./components/MonitorUserVacationPeriods";
 
 
-Vue.use(Router)
-
-let router = new Router({
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL), 
   mode: 'hash',
   routes: [
     {

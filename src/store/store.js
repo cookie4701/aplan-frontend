@@ -1,8 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vue from 'vue'
+//import Vuex from 'vuex'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
+//import VueAxios from 'vue-axios'
 import {apiHost} from '../config'
+
+import { createStore } from 'vuex'
 
 import auth from './modules/auth';
 import userinfo from "./modules/userinfo";
@@ -15,10 +17,10 @@ import workareas from "./modules/workareas";
 import weekdata from "./modules/weekdata";
 import periods from "./modules/periods";
 
-Vue.use(Vuex)
-Vue.use(VueAxios, axios)
+//Vue.use(Vuex)
+//Vue.use(VueAxios, axios)
 
-export default new Vuex.Store({
+export default createStore({
     modules : {
         auth,
         userinfo,

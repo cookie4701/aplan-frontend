@@ -20,8 +20,16 @@
     <img src="../assets/static/loading.gif" />
 
   </div>
-  <div v-else>
-    <EnterWorkday @passMessage="processMessage($event)" @onUpdateTimes="updateTimes($event)" v-for="workday in week" v-bind:key="workday.id" :workdaydata="workday"></EnterWorkday>
+  <div v-else-if="weekState === 'success'">
+	<div v-for='workday in week'>
+	{{workday.id}}
+    <EnterWorkday 
+	@passMessage='processMessage($event)' 
+	@onUpdateTimes='updateTimes($event)' 
+	:workdaydata='workday' 
+	v-bind:key="workday.id"
+    />
+	</div>
 
     <div class="totalweek">
       <div class="row">
@@ -85,16 +93,15 @@
         <div class="col-sm-2">{{resultTimeVacation}}</div>
       </div>
 
-
-
     </div>
   </div>
+	<div v-else>oooo</div>
 </div>
 </template>
 
-<script>
+<script setup>
 import {mapState} from "vuex";
-import EnterWorkday from "./EnterWorkday";
+import EnterWorkday from "./EnterWorkday.vue";
 import {
   calcMonday,
   convertIntegerToTimeString,
@@ -103,6 +110,9 @@ import {
   timeToMinutes
 } from "../helper";
 
+</script>
+
+<script>
 
 export default {
   name: "EnterWorktime",
@@ -131,8 +141,8 @@ export default {
       hollidayTimeTakenThisWeek : 0,
       hollidayTimeTakenThisWeekString : '',
       vacationTimeTakenThisWeek : 0,
-			vacationTimeTakenThisWeekString : '',
-			vacationTimeRemainBeforeWeekString : ''
+      vacationTimeTakenThisWeekString : '',
+      vacationTimeRemainBeforeWeekString : ''
     }
   },
   components: {EnterWorkday},
@@ -143,6 +153,8 @@ export default {
   },
   methods: {
     updateTimes(eventdata) {
+	
+if (! eventdata ) return;
       for (let i = 0; i < this.week.length; i++ ) {
         if (eventdata.id === this.week[i].id) {
 
@@ -233,20 +245,21 @@ export default {
 
     },
     recalc: function() {
+	
       this.hollidayTimeRemainBeforeWeekFx();
       this.bonusTimeFx();
       this.hollidayPeriodFx();
       this.vacationPeriodFx();
       this.hollidaysRemainBeforeWeekFx();
       this.vacationDaysRemainBeforeWeekFx();
-			this.vacationTimeRemainBeforeWeekFx();
+      this.vacationTimeRemainBeforeWeekFx();
       this.calcOffDays();
       this.calcWorkToDo();
       this.timeAccountBeforeFx();
       this.calcWorkDone();
       this.calcNewResult();
       this.calcOffTime();
-
+	
     },
 
     vacationTimeRemainBeforeWeekFx() {
