@@ -115,12 +115,12 @@ export default {
     },
     actions: {
         fetchWeekData({commit}, objToSend) {
+            
             commit('fetchWeekdataPending');
             let queryDate = convertStringToDate(objToSend.startdate);
 
             let promises = [];
             for (let x = 0; x < objToSend.nbrDays; x++ ) {
-
                 let objData = '';
                 let day = 1;
                 let month = 1;
@@ -140,6 +140,7 @@ export default {
                     startdate : queryDate.getFullYear() + '-' + month + '-' + day
                 }
 
+                //axios.defaults.headers.common['Authorization'] = localStorage.getItem('user-token').replace(/\n/g,'') || '';
                 promises[x] = axios
                     .get(apiHost + '/rest/weekdata/read.php', { params : objData } )
                     .then( response => response.data)
@@ -152,6 +153,7 @@ export default {
                     .catch( (err) => {
                         // eslint-disable-next-line no-console
                         console.log('oops: ' + err);
+                        
 
                     });
 

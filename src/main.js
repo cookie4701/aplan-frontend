@@ -9,7 +9,7 @@ import { jwtInterceptor } from './helper';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
-import EnterWorkday from './components/EnterWorkday.vue';
+//import EnterWorkday from './components/EnterWorkday.vue';
 
 
 jwtInterceptor();

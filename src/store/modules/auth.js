@@ -6,11 +6,11 @@ export default {
         status: '',
         token: localStorage.getItem('user-token') || '',
         user: {},
-	moderator : false,
+	    moderator : localStorage.getItem('is-moderator') ||'', //false,
     },
     getters: {
         isLoggedIn: state => !!state.token,
-	isModerator: state => state.moderator,
+	    isModerator: state => state.moderator,
         authStatus: state => state.status
     },
     setters : {
@@ -46,10 +46,11 @@ export default {
 			payload.token = resp.data.token
                         payload.user = resp.data.user
 			payload.moderator = resp.data.isModerator
-                        localStorage.setItem('user-token', resp.data.token)
-                        axios.defaults.headers.common['Authorization'] = resp.data.token
-                        commit('auth_success', payload)
-                        resolve(resp)
+                        localStorage.setItem('user-token', resp.data.token);
+                        localStorage.setItem('is-moderator', resp.data.isModerator);
+                        axios.defaults.headers.common['Authorization'] = resp.data.token;
+                        commit('auth_success', payload);
+                        resolve(resp);
                     })
                     .catch(err => {
                         commit('auth_error')
@@ -62,7 +63,7 @@ export default {
             return new Promise((resolve) => {
                 commit('logout')
                 localStorage.removeItem('user-token')
-                delete axios.defaults.headers.common['Authorization']
+                delete axios.defaults.headers.common['Authorization'];
                 resolve()
             })
         }

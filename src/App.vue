@@ -1,24 +1,35 @@
 <template>
 
   <div id="app" class="container-fluid">
+    
+
+
     <div class="row d-print-none">
       <button @click='go_home' v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Home</button>
       <button @click="enter_worktime"  v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Erledigte Arbeit eintragen</button>
       <button @click="enter_userinfo" v-if="isLoggedIn" class="col m-md-2 btn btn-primary" variant="primary">Benutzerinformationen anpassen</button>
       <button v-if="isLoggedIn" to="/selfstat" class="col m-md-2 btn btn-primary" variant="primary">Statistik</button>
-      <button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2" variant="primary">Fahrten</button>
+      <button v-if="isLoggedIn" to="/businesstrip" class="col m-md-2 btn btn-primary" variant="primary">Fahrten</button>
+      <div class="dropdown">
+        <button 
+          id="dropdownmoderation" 
+          data-bs-toggle="dropdown" 
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          v-if="isModerator">
+          Moderation
+        </button>
+        <ul class="dropdown-menu" id="monitor_target">
+              <li><a @click="" class="dropdown-item">Nutzer moderieren</a></li>
+              <li><a href="#" class="dropdown-item">Allgemeine Arbeitszeiträume festlegen</a></li>
+              <li><a href="#" class="dropdown-item">Allgemeine Arbeitszeiträume anzeigen</a></li>
+              <li><a href="#" class="dropdown-item">Allgemeine Arbeitszeiträume</a></li>
+              
+        </ul>
+      </div>
 
-      <button id="dropdownmoderation" data-bs-target='#monitor_target' data-bs-toggle="collapse" class="m-md-2 col btn btn-primary" v-if="isModerator">Moderation</button>
-
-<div id='monitor_target'>
-	<button @click='' class="btn btn-secondary">Nutzer moderieren</button>
-	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume festlegen</button>
-	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume anzeigen</button>
-	<button @click='' class="btn btn-secondary">Allgemeine Arbeitszeiträume</button>
-
-</div>
-
-      <button v-if="isLoggedIn" @click="logout" class="col m-md-2">Logout</button>
+      
+      <button v-if="isLoggedIn" @click="logout" class="col m-md-2 btn btn-primary">Logout</button>
 	<button v-if="!isLoggedIn" @click="login_do" class="btn btn-primary">Login</button>
  
     </div>

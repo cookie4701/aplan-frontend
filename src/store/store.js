@@ -1,7 +1,4 @@
-//import Vue from 'vue'
-//import Vuex from 'vuex'
 import axios from 'axios'
-//import VueAxios from 'vue-axios'
 import {apiHost} from '../config'
 
 import { createStore } from 'vuex'

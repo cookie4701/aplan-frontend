@@ -24,8 +24,9 @@
 	<div v-for='workday in week'>
 	{{workday.id}}
     <EnterWorkday 
+    
 	@passMessage='processMessage($event)' 
-	@onUpdateTimes='updateTimes($event)' 
+	@onUpdateTimes='updateTimes($event)'
 	:workdaydata='workday' 
 	v-bind:key="workday.id"
     />
@@ -222,12 +223,12 @@ if (! eventdata ) return;
         datestring += '0';
       }
       datestring += monday.getDate();
-      const data = {
+      const datafetch = {
         startdate: datestring,
         nbrDays: 7
       };
 
-      var prom = this.$store.dispatch('fetchWeekData', data);
+      var prom = this.$store.dispatch('fetchWeekData', datafetch);
 
       prom.then(() => {
         this.workdaysLoading = false;
@@ -290,6 +291,7 @@ if (! eventdata ) return;
       }
 
     },
+
     hollidaysRemainBeforeWeekFx: function() {
       if (this.week === undefined) {
         return 0;
@@ -298,6 +300,7 @@ if (! eventdata ) return;
       this.hollidaysRemainBeforeWeek = this.week[0].remainHollidayBeforeDate;
     },
     vacationPeriodFx: function() {
+      
       if (this.week === undefined) {
         this.vacationPeriod = "Keine Feiertagsperiode definiert!";
         return;
